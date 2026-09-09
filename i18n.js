@@ -297,11 +297,11 @@ const ITEM_DATA = {
       "price": "275",
       "en": [
         "English Breakfast",
-        "Eggs, sausage, beans & toast"
+        "Eggs, sausage, frise ,beans & toast"
       ],
       "ar": [
         "فطور إنجليزي",
-        "بيض، سجق، فول وتوست"
+        "بيض، سجق ، بطاطس ،فول وتوست"
       ],
       "fr": [
         "Petit-déjeuner anglais",
@@ -332,11 +332,11 @@ const ITEM_DATA = {
       "price": "185",
       "en": [
         "Oriental Breakfast",
-        "Ful, eggs, cheese & fresh bread"
+        "Ful, eggs, frise ,cheese & fresh bread"
       ],
       "ar": [
         "فطور شرقي",
-        "فول، بيض، جبنة وخبز طازج"
+        "فول، بيض، جبنة، بطاطس وخبز طازج"
       ],
       "fr": [
         "Petit-déjeuner oriental",
@@ -399,7 +399,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "110",
+      "price": "130",
       "en": [
         "Omelet Veg / Cheese",
         "Fluffy omelette, vegetables or cheese"
@@ -434,7 +434,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "130",
+      "price": "110",
       "en": [
         "Omelette",
         "Classic plain omelette"
@@ -751,7 +751,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "150",
+      "price": "185",
       "en": [
         "Nuggets",
         "Crispy breaded chicken nuggets"
@@ -786,7 +786,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "181",
+      "price": "220",
       "en": [
         "Fried Calamari",
         "Crispy fried squid rings"
@@ -821,7 +821,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "220",
+      "price": "320",
       "en": [
         "Fried Shrimp",
         "Crispy battered shrimp"
@@ -856,7 +856,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "320",
+      "price": "195",
       "en": [
         "Fried Mozzarella",
         "Breaded mozzarella sticks"
@@ -891,7 +891,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "195",
+      "price": "250",
       "en": [
         "Chicken Wings",
         "Grilled or fried chicken wings"
@@ -926,7 +926,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "250",
+      "price": "200",
       "en": [
         "Chicken Fingers",
         "Crispy breaded chicken strips"
@@ -1070,36 +1070,36 @@ const ITEM_DATA = {
     {
       "price": "260",
       "en": [
-        "Caesar Salad",
-        "Romaine, parmesan, croutons & Caesar dressing"
+        "Shrimp Caesar Salad",
+        "Shrimp, romaine, parmesan & Caesar dressing"
       ],
       "ar": [
-        "سلطة سيزر",
-        "خس، جبنة بارميزان وصوص سيزر"
+        "سلطة سيزر بالجمبري",
+        "جمبري، خس، جبنة بارميزان وصوص سيزر"
       ],
       "fr": [
-        "Salade César",
-        "Romaine, parmesan, croûtons et sauce César"
+        "Salade César aux crevettes",
+        "Crevettes, romaine, parmesan et sauce César"
       ],
       "ru": [
-        "Салат Цезарь",
-        "Салат ромэн, пармезан и соус Цезарь"
+        "Салат Цезарь с креветками",
+        "Креветки, салат ромэн, пармезан и соус Цезарь"
       ],
       "es": [
-        "Ensalada César",
-        "Lechuga romana, parmesano y aderezo César"
+        "Ensalada César con camarones",
+        "Camarones, lechuga romana, parmesano y aderezo César"
       ],
       "pl": [
-        "Sałatka Cezar",
-        "Rzymska sałata, parmezan i sos Cezar"
+        "Sałatka Cezar z krewetkami",
+        "Krewetki, rzymska sałata, parmezan i sos Cezar"
       ],
       "de": [
-        "Caesar Salat",
-        "Römersalat, Parmesan & Caesar-Dressing"
+        "Caesar Salat mit Garnelen",
+        "Garnelen, Römersalat, Parmesan & Caesar-Dressing"
       ],
       "it": [
-        "Insalata Caesar",
-        "Lattuga romana, parmigiano e salsa Caesar"
+        "Insalata Caesar con gamberetti",
+        "Gamberetti, lattuga romana, parmigiano e salsa Caesar"
       ]
     },
     {
@@ -1704,7 +1704,7 @@ const ITEM_DATA = {
     {
       "price": "240",
       "en": [
-        "Chicken Panini",
+        "Chicken Pannni",
         "Grilled chicken, toasted panini bread"
       ],
       "ar": [
@@ -1809,7 +1809,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "750",
+      "price": "800",
       "en": [
         "Camel Steak",
         "Grilled camel meat steak"
@@ -1844,7 +1844,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "800",
+      "price": "750",
       "en": [
         "Beef Fillet",
         "Tender grilled beef fillet"
@@ -1879,7 +1879,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "750",
+      "price": "895",
       "en": [
         "Mix Grill",
         "Assorted grilled meats"
@@ -1914,7 +1914,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "895",
+      "price": "845",
       "en": [
         "Surf & Turf",
         "Grilled steak paired with shrimp"
@@ -2053,6 +2053,42 @@ const ITEM_DATA = {
         "Bistecca tomahawk con osso alla griglia"
       ]
     }
+    ,
+    {
+      "price": "495",
+      "en": [
+        "Beef Fajita",
+        "Sizzling beef strips with peppers & onions"
+      ],
+      "ar": [
+        "فاهيتا لحم",
+        "شرائح لحم مقلية بالفلفل والبصل"
+      ],
+      "fr": [
+        "Fajita de bœuf",
+        "Lanières de bœuf grillées aux poivrons et oignons"
+      ],
+      "ru": [
+        "Фахита из говядины",
+        "Полоски говядины на шипящей сковороде с перцем и луком"
+      ],
+      "es": [
+        "Fajita de res",
+        "Tiras de res a la plancha con pimientos y cebolla"
+      ],
+      "pl": [
+        "Fajita wołowa",
+        "Paski wołowiny z papryką i cebulą, podane na skwierczącej patelni"
+      ],
+      "de": [
+        "Rindfleisch-Fajita",
+        "Brutzelnde Rinderstreifen mit Paprika & Zwiebeln"
+      ],
+      "it": [
+        "Fajita di manzo",
+        "Striscioline di manzo saltate con peperoni e cipolle"
+      ]
+    }
   ],
   "chicken": [
     {
@@ -2062,7 +2098,7 @@ const ITEM_DATA = {
         "Chicken in creamy panna sauce"
       ],
       "ar": [
-        "دجاج بانا",
+        "دجاج بانيه",
         "دجاج بصوص بانا الكريمي"
       ],
       "fr": [
@@ -2233,7 +2269,7 @@ const ITEM_DATA = {
     {
       "price": "495",
       "en": [
-        "Chicken Cordon Bleu",
+        "Chicken Cordon Blue",
         "Breaded chicken, ham & cheese"
       ],
       "ar": [
@@ -2725,7 +2761,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "295",
+      "price": "220",
       "en": [
         "Four Cheese",
         "Pasta in creamy four-cheese sauce"
@@ -2795,7 +2831,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "350",
+      "price": "295",
       "en": [
         "Negresco",
         "Pasta with creamy seafood sauce"
@@ -2830,7 +2866,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "295",
+      "price": "350",
       "en": [
         "Smoked Salmon Pasta",
         "Pasta with smoked salmon, cream sauce"
@@ -3219,7 +3255,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "175",
+      "price": "145",
       "en": [
         "Cheese Cake",
         "Creamy baked cheesecake"
@@ -3254,7 +3290,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "170",
+      "price": "175",
       "en": [
         "Molten Cake",
         "Warm cake, melted chocolate center"
@@ -3289,7 +3325,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "175",
+      "price": "170",
       "en": [
         "Tiramisu",
         "Classic coffee-flavored Italian dessert"
@@ -5092,11 +5128,11 @@ const ITEM_DATA = {
     {
       "price": "220",
       "en": [
-        "Vodka Strawberry",
+        "Woohoo",
         "Vodka with fresh strawberry"
       ],
       "ar": [
-        "فودكا فراولة",
+        " وو هو",
         "فودكا مع فراولة طازجة"
       ],
       "fr": [
@@ -5514,7 +5550,7 @@ const ITEM_DATA = {
   ],
   "wine": [
     {
-      "price": "145 / 750",
+      "price": "145 / 590",
       "en": [
         "Omar Khayam",
         "Egyptian red or white — quarter / bottle"
@@ -5549,7 +5585,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "340",
+      "price": "840",
       "en": [
         "Château de Granville",
         "Bottle of red or white wine"
@@ -5584,7 +5620,42 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "365",
+      "price": "640",
+      "en": [
+        "365",
+        "Egyptian house wine, smooth & easy-drinking"
+      ],
+      "ar": [
+        "365",
+        "نبيذ مصري محلي، طعمه ناعم وسهل"
+      ],
+      "fr": [
+        "365",
+        "Vin de maison égyptien, doux et facile à boire"
+      ],
+      "ru": [
+        "365",
+        "Египетское домашнее вино, мягкое и легкое"
+      ],
+      "es": [
+        "365",
+        "Vino de la casa egipcio, suave y fácil de beber"
+      ],
+      "pl": [
+        "365",
+        "Egipskie wino domowe, łagodne i lekkie w piciu"
+      ],
+      "de": [
+        "365",
+        "Ägyptischer Hauswein, weich und leicht zu trinken"
+      ],
+      "it": [
+        "365",
+        "Vino della casa egiziano, morbido e facile da bere"
+      ]
+    },
+    {
+      "price": "920",
       "en": [
         "Cape Bay",
         "Bottle of red or white wine"
@@ -5619,7 +5690,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "540",
+      "price": "690",
       "en": [
         "Grand Marquis",
         "Bottle of premium red or white wine"
@@ -5654,7 +5725,7 @@ const ITEM_DATA = {
       ]
     },
     {
-      "price": "580",
+      "price": "980",
       "en": [
         "Aida Valmont Sparkling",
         "Bottle of sparkling wine"

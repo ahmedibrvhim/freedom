@@ -6,6 +6,7 @@
 ══════════════════════════════════════ */
 
 const STORAGE_KEY = 'freedom_lang';
+const THEME_KEY = 'freedom_theme';
 
 const LANGS = [
   { code: 'en', dir: 'ltr', label: 'English' },
@@ -36,6 +37,7 @@ const dict = {
     footer_address_value: '123 Coffee Street, Giza',
     footer_note: 'Prices include tax. Ask your server about seasonal specials.',
     back_link: '← Back',
+    menu_coming_soon: 'Coming soon',
   },
   ar: {
     brand_name: 'Freedom',
@@ -54,6 +56,7 @@ const dict = {
     footer_address_value: '١٢٣ شارع القهوة، الجيزة',
     footer_note: 'الأسعار شاملة الضريبة. اسأل النادل عن العروض الموسمية.',
     back_link: '→ رجوع',
+    menu_coming_soon: 'قريباً',
   },
   fr: {
     brand_name: 'Freedom',
@@ -72,6 +75,7 @@ const dict = {
     footer_address_value: '123 Coffee Street, Gizeh',
     footer_note: 'Prix taxes comprises. Demandez nos spécialités de saison.',
     back_link: '← Retour',
+    menu_coming_soon: 'Bientôt disponible',
   },
   ru: {
     brand_name: 'Freedom',
@@ -90,6 +94,7 @@ const dict = {
     footer_address_value: 'Coffee Street 123, Гиза',
     footer_note: 'Цены указаны с учётом налога. Спросите официанта о сезонных предложениях.',
     back_link: '← Назад',
+    menu_coming_soon: 'Скоро',
   },
   es: {
     brand_name: 'Freedom',
@@ -108,6 +113,7 @@ const dict = {
     footer_address_value: 'Calle del Café 123, Guiza',
     footer_note: 'Los precios incluyen impuestos. Pregunta por las especialidades de temporada.',
     back_link: '← Volver',
+    menu_coming_soon: 'Próximamente',
   },
   pl: {
     brand_name: 'Freedom',
@@ -126,6 +132,7 @@ const dict = {
     footer_address_value: 'Coffee Street 123, Giza',
     footer_note: 'Ceny zawierają podatek. Zapytaj obsługę o sezonowe specjały.',
     back_link: '← Wstecz',
+    menu_coming_soon: 'Wkrótce',
   },
   de: {
     brand_name: 'Freedom',
@@ -144,6 +151,7 @@ const dict = {
     footer_address_value: 'Coffee Street 123, Gizeh',
     footer_note: 'Preise inkl. Steuer. Fragen Sie nach saisonalen Empfehlungen.',
     back_link: '← Zurück',
+    menu_coming_soon: 'Demnächst',
   },
   it: {
     brand_name: 'Freedom',
@@ -162,190 +170,96 @@ const dict = {
     footer_address_value: '123 Coffee Street, Giza',
     footer_note: 'I prezzi includono le tasse. Chiedi al cameriere le specialità stagionali.',
     back_link: '← Indietro',
+    menu_coming_soon: 'Prossimamente',
   },
 };
 
-/* ── Placeholder menu content ──
-   Replace names, descriptions and prices with your real menu.
-   Prices are plain numbers; the currency label comes from dict[lang].currency. */
-const menuData = {
-  en: [
-    { id: 'coffee', name: 'Coffee', items: [
-      { name: 'Espresso', desc: 'A concentrated shot, rich and bold.', price: 45 },
-      { name: 'Cappuccino', desc: 'Espresso with steamed milk and a thick layer of foam.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso with velvety micro-foamed milk.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Tea & Herbal', items: [
-      { name: 'Black Tea', desc: 'A robust classic blend, served hot.', price: 40 },
-      { name: 'Mint Tea', desc: 'Fresh mint leaves steeped until fragrant.', price: 45 },
-      { name: 'Chamomile', desc: 'A calming floral infusion.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Cold Brews', items: [
-      { name: 'Iced Latte', desc: 'Espresso over milk and ice, smooth and cold.', price: 70 },
-      { name: 'Cold Brew', desc: 'Slow-steeped for twelve hours, naturally sweet.', price: 65 },
-      { name: 'Iced Mocha', desc: 'Espresso, chocolate and cold milk over ice.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Something to Eat', items: [
-      { name: 'Croissant', desc: 'Buttery, flaky, baked fresh every morning.', price: 55 },
-      { name: 'Cheesecake', desc: 'Creamy classic with a buttery biscuit base.', price: 95 },
-      { name: 'Avocado Toast', desc: 'Sourdough, smashed avocado, chili flakes, lemon.', price: 120 },
-    ]},
-  ],
-  ar: [
-    { id: 'coffee', name: 'قهوة', items: [
-      { name: 'إسبريسو', desc: 'جرعة مركزة، غنية وقوية.', price: 45 },
-      { name: 'كابتشينو', desc: 'إسبريسو مع حليب مبخّر وطبقة سميكة من الرغوة.', price: 60 },
-      { name: 'فلات وايت', desc: 'إسبريسو مع حليب حريري ناعم الرغوة.', price: 65 },
-    ]},
-    { id: 'tea', name: 'شاي وأعشاب', items: [
-      { name: 'شاي أسود', desc: 'مزيج كلاسيكي قوي، يُقدَّم ساخناً.', price: 40 },
-      { name: 'شاي بالنعناع', desc: 'أوراق نعناع طازجة منقوعة حتى تفوح رائحتها.', price: 45 },
-      { name: 'بابونج', desc: 'منقوع أزهار مهدئ.', price: 45 },
-    ]},
-    { id: 'cold', name: 'مشروبات باردة', items: [
-      { name: 'لاتيه مثلج', desc: 'إسبريسو فوق الحليب والثلج، ناعم وبارد.', price: 70 },
-      { name: 'كولد برو', desc: 'منقوع ببطء لاثنتي عشرة ساعة، حلو بشكل طبيعي.', price: 65 },
-      { name: 'موكا مثلج', desc: 'إسبريسو وشوكولاتة وحليب بارد فوق الثلج.', price: 75 },
-    ]},
-    { id: 'eat', name: 'شيء للأكل', items: [
-      { name: 'كرواسون', desc: 'زبدي ومقرمش، يُخبز طازجاً كل صباح.', price: 55 },
-      { name: 'تشيز كيك', desc: 'كلاسيكية كريمية بقاعدة بسكويت زبدية.', price: 95 },
-      { name: 'أفوكادو توست', desc: 'خبز العجين المخمر، أفوكادو مهروس، رقائق فلفل حار، ليمون.', price: 120 },
-    ]},
-  ],
-  fr: [
-    { id: 'coffee', name: 'Café', items: [
-      { name: 'Espresso', desc: 'Un shot concentré, riche et corsé.', price: 45 },
-      { name: 'Cappuccino', desc: 'Espresso avec lait moussé et une épaisse couche de mousse.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso avec un lait à micro-mousse velouté.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Thé et infusions', items: [
-      { name: 'Thé noir', desc: 'Un mélange classique et corsé, servi chaud.', price: 40 },
-      { name: 'Thé à la menthe', desc: 'Feuilles de menthe fraîche infusées jusqu\u2019au parfum.', price: 45 },
-      { name: 'Camomille', desc: 'Une infusion florale apaisante.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Boissons froides', items: [
-      { name: 'Latte glacé', desc: 'Espresso sur lait et glaçons, doux et frais.', price: 70 },
-      { name: 'Cold Brew', desc: 'Infusé lentement pendant douze heures, naturellement sucré.', price: 65 },
-      { name: 'Mocha glacé', desc: 'Espresso, chocolat et lait froid sur glaçons.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Une petite faim', items: [
-      { name: 'Croissant', desc: 'Beurré et feuilleté, cuit frais chaque matin.', price: 55 },
-      { name: 'Cheesecake', desc: 'Un classique crémeux sur une base de biscuit beurré.', price: 95 },
-      { name: 'Toast à l\u2019avocat', desc: 'Pain au levain, avocat écrasé, piment en flocons, citron.', price: 120 },
-    ]},
-  ],
-  ru: [
-    { id: 'coffee', name: 'Кофе', items: [
-      { name: 'Эспрессо', desc: 'Концентрированный, насыщенный и крепкий.', price: 45 },
-      { name: 'Капучино', desc: 'Эспрессо с взбитым молоком и густой пенкой.', price: 60 },
-      { name: 'Флэт уайт', desc: 'Эспрессо с бархатистой микропенкой.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Чай и травы', items: [
-      { name: 'Чёрный чай', desc: 'Насыщенная классическая смесь, подаётся горячим.', price: 40 },
-      { name: 'Мятный чай', desc: 'Свежие листья мяты, настоянные до аромата.', price: 45 },
-      { name: 'Ромашковый чай', desc: 'Успокаивающий цветочный настой.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Холодные напитки', items: [
-      { name: 'Айс латте', desc: 'Эспрессо с молоком и льдом, мягкий и холодный.', price: 70 },
-      { name: 'Колд брю', desc: 'Настаивается двенадцать часов, естественно сладкий.', price: 65 },
-      { name: 'Айс мокко', desc: 'Эспрессо, шоколад и холодное молоко со льдом.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Что-нибудь перекусить', items: [
-      { name: 'Круассан', desc: 'Слоёный, маслянистый, выпекается каждое утро.', price: 55 },
-      { name: 'Чизкейк', desc: 'Классический кремовый чизкейк на песочной основе.', price: 95 },
-      { name: 'Тост с авокадо', desc: 'Хлеб на закваске, авокадо, острый перец, лимон.', price: 120 },
-    ]},
-  ],
-  es: [
-    { id: 'coffee', name: 'Café', items: [
-      { name: 'Espresso', desc: 'Una toma concentrada, intensa y con cuerpo.', price: 45 },
-      { name: 'Capuchino', desc: 'Espresso con leche vaporizada y una espesa capa de espuma.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso con leche de microespuma aterciopelada.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Té e infusiones', items: [
-      { name: 'Té negro', desc: 'Una mezcla clásica e intensa, servida caliente.', price: 40 },
-      { name: 'Té de menta', desc: 'Hojas de menta frescas en infusión hasta perfumar.', price: 45 },
-      { name: 'Manzanilla', desc: 'Una infusión floral relajante.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Bebidas frías', items: [
-      { name: 'Latte helado', desc: 'Espresso sobre leche y hielo, suave y frío.', price: 70 },
-      { name: 'Cold brew', desc: 'Infusionado lentamente durante doce horas, dulce de forma natural.', price: 65 },
-      { name: 'Moca helado', desc: 'Espresso, chocolate y leche fría con hielo.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Algo para comer', items: [
-      { name: 'Croissant', desc: 'Hojaldrado y mantecoso, horneado fresco cada mañana.', price: 55 },
-      { name: 'Tarta de queso', desc: 'Clásica y cremosa sobre una base de galleta.', price: 95 },
-      { name: 'Tostada de aguacate', desc: 'Pan de masa madre, aguacate, chile en hojuelas, limón.', price: 120 },
-    ]},
-  ],
-  pl: [
-    { id: 'coffee', name: 'Kawa', items: [
-      { name: 'Espresso', desc: 'Skoncentrowana, intensywna i mocna kawa.', price: 45 },
-      { name: 'Cappuccino', desc: 'Espresso ze spienionym mlekiem i grubą warstwą pianki.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso z aksamitnie spienionym mlekiem.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Herbata i zioła', items: [
-      { name: 'Czarna herbata', desc: 'Mocna, klasyczna mieszanka, podawana na gorąco.', price: 40 },
-      { name: 'Herbata miętowa', desc: 'Świeże listki mięty parzone do pełni aromatu.', price: 45 },
-      { name: 'Rumianek', desc: 'Kojący, kwiatowy napar.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Napoje na zimno', items: [
-      { name: 'Iced Latte', desc: 'Espresso z mlekiem i lodem, gładkie i chłodne.', price: 70 },
-      { name: 'Cold Brew', desc: 'Parzona na zimno przez dwanaście godzin, naturalnie słodka.', price: 65 },
-      { name: 'Iced Mocha', desc: 'Espresso, czekolada i zimne mleko z lodem.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Coś do jedzenia', items: [
-      { name: 'Croissant', desc: 'Maślany i kruchy, pieczony świeżo każdego ranka.', price: 55 },
-      { name: 'Sernik', desc: 'Klasyczny, kremowy sernik na maślanej kruszonce.', price: 95 },
-      { name: 'Tost z awokado', desc: 'Pieczywo na zakwasie, awokado, płatki chili, cytryna.', price: 120 },
-    ]},
-  ],
-  de: [
-    { id: 'coffee', name: 'Kaffee', items: [
-      { name: 'Espresso', desc: 'Ein konzentrierter Shot, kräftig und intensiv.', price: 45 },
-      { name: 'Cappuccino', desc: 'Espresso mit aufgeschäumter Milch und dichtem Schaum.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso mit samtig cremiger Mikroschaummilch.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Tee & Kräuter', items: [
-      { name: 'Schwarzer Tee', desc: 'Eine kräftige klassische Mischung, heiß serviert.', price: 40 },
-      { name: 'Pfefferminztee', desc: 'Frische Minzblätter, aufgebrüht bis zum vollen Aroma.', price: 45 },
-      { name: 'Kamillentee', desc: 'Ein beruhigender Blütenaufguss.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Kalte Getränke', items: [
-      { name: 'Iced Latte', desc: 'Espresso mit Milch und Eis, sanft und kühl.', price: 70 },
-      { name: 'Cold Brew', desc: 'Zwölf Stunden kalt aufgegossen, natürlich süß.', price: 65 },
-      { name: 'Iced Mocha', desc: 'Espresso, Schokolade und kalte Milch mit Eis.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Etwas zu essen', items: [
-      { name: 'Croissant', desc: 'Buttrig und blättrig, jeden Morgen frisch gebacken.', price: 55 },
-      { name: 'Käsekuchen', desc: 'Klassisch cremig auf einem butterartigen Keksboden.', price: 95 },
-      { name: 'Avocado-Toast', desc: 'Sauerteigbrot, zerdrückte Avocado, Chiliflocken, Zitrone.', price: 120 },
-    ]},
-  ],
-  it: [
-    { id: 'coffee', name: 'Caffè', items: [
-      { name: 'Espresso', desc: 'Un caffè concentrato, intenso e corposo.', price: 45 },
-      { name: 'Cappuccino', desc: 'Espresso con latte montato e uno spesso strato di schiuma.', price: 60 },
-      { name: 'Flat White', desc: 'Espresso con latte vellutato a microschiuma.', price: 65 },
-    ]},
-    { id: 'tea', name: 'Tè & Infusi', items: [
-      { name: 'Tè Nero', desc: 'Una miscela classica e robusta, servita calda.', price: 40 },
-      { name: 'Tè alla Menta', desc: 'Foglie di menta fresca infuse fino a profumare.', price: 45 },
-      { name: 'Camomilla', desc: 'Un infuso floreale rilassante.', price: 45 },
-    ]},
-    { id: 'cold', name: 'Bevande Fredde', items: [
-      { name: 'Latte Ghiacciato', desc: 'Espresso su latte e ghiaccio, morbido e freddo.', price: 70 },
-      { name: 'Cold Brew', desc: 'Infuso lentamente per dodici ore, dolce naturalmente.', price: 65 },
-      { name: 'Mocha Ghiacciato', desc: 'Espresso, cioccolato e latte freddo su ghiaccio.', price: 75 },
-    ]},
-    { id: 'eat', name: 'Qualcosa da Mangiare', items: [
-      { name: 'Croissant', desc: 'Burroso e sfogliato, sfornato fresco ogni mattina.', price: 55 },
-      { name: 'Cheesecake', desc: 'Un classico cremoso su una base di biscotto al burro.', price: 95 },
-      { name: 'Toast all\\u2019Avocado', desc: 'Pane a lievitazione naturale, avocado schiacciato, peperoncino a fiocchi, limone.', price: 120 },
-    ]},
-  ],
+/* ── Menu category structure ──
+   This is the shape of the menu: top-level sections, their subcategories,
+   and (for Main Dishes) a further level of sub-subcategories. Every leaf
+   category starts with an empty items list — fill those in with real
+   dishes/drinks (name, desc, price) whenever you're ready. Add a new
+   language column below and it will show up in every category
+   automatically; no need to touch the tree shape itself. */
+const CATEGORY_TREE = [
+  { key: 'food', children: [
+      { key: 'breakfast' },
+      { key: 'appetizers' },
+      { key: 'salads' },
+      { key: 'soup' },
+      { key: 'sandwiches' },
+      { key: 'main_dishes', children: [
+          { key: 'meat' },
+          { key: 'chicken' },
+          { key: 'fish' },
+      ]},
+      { key: 'pasta' },
+      { key: 'pizza' },
+      { key: 'desserts' },
+  ]},
+  { key: 'drinks', children: [
+      { key: 'hot_drinks' },
+      { key: 'soft_drinks' },
+      { key: 'iced_drinks' },
+      { key: 'milkshake' },
+      { key: 'fresh_juice' },
+      { key: 'fresh_cocktails' },
+      { key: 'mocktails' },
+      { key: 'cocktails' },
+      { key: 'shoots' },
+      { key: 'wine' },
+      { key: 'beer' },
+  ]},
+  { key: 'shisha' },
+  { key: 'nuts_mazza' },
+  { key: 'billiards' },
+];
+
+/* en / ar / fr / ru / es / pl / de / it — one row per category key. */
+const CATEGORY_NAMES = {
+  food:            { en: 'Food',             ar: 'الطعام',                 fr: 'Nourriture',          ru: 'Еда',                     es: 'Comida',            pl: 'Jedzenie',        de: 'Essen',           it: 'Cibo' },
+  breakfast:       { en: 'Breakfast',         ar: 'فطور',                    fr: 'Petit-déjeuner',      ru: 'Завтрак',                 es: 'Desayuno',          pl: 'Śniadanie',       de: 'Frühstück',       it: 'Colazione' },
+  appetizers:      { en: 'Appetizers',        ar: 'مقبلات',                  fr: 'Entrées',             ru: 'Закуски',                 es: 'Entrantes',         pl: 'Przystawki',      de: 'Vorspeisen',      it: 'Antipasti' },
+  salads:          { en: 'Salads',            ar: 'سلطات',                   fr: 'Salades',             ru: 'Салаты',                  es: 'Ensaladas',         pl: 'Sałatki',         de: 'Salate',          it: 'Insalate' },
+  soup:            { en: 'Soup',              ar: 'شوربة',                   fr: 'Soupes',              ru: 'Супы',                    es: 'Sopas',             pl: 'Zupy',            de: 'Suppen',          it: 'Zuppe' },
+  sandwiches:      { en: 'Sandwiches',        ar: 'سندويشات',                fr: 'Sandwichs',           ru: 'Сэндвичи',                es: 'Sándwiches',        pl: 'Kanapki',         de: 'Sandwiches',      it: 'Panini' },
+  main_dishes:     { en: 'Main Dishes',       ar: 'الأطباق الرئيسية',        fr: 'Plats Principaux',    ru: 'Основные блюда',          es: 'Platos Principales',pl: 'Dania Główne',   de: 'Hauptgerichte',   it: 'Piatti Principali' },
+  meat:            { en: 'Meat',              ar: 'لحوم',                    fr: 'Viande',              ru: 'Мясо',                    es: 'Carne',             pl: 'Mięso',           de: 'Fleisch',         it: 'Carne' },
+  chicken:         { en: 'Chicken',           ar: 'دجاج',                    fr: 'Poulet',              ru: 'Курица',                  es: 'Pollo',             pl: 'Kurczak',         de: 'Hähnchen',        it: 'Pollo' },
+  fish:            { en: 'Fish',              ar: 'أسماك',                   fr: 'Poisson',             ru: 'Рыба',                    es: 'Pescado',           pl: 'Ryby',            de: 'Fisch',           it: 'Pesce' },
+  pasta:           { en: 'Pasta',             ar: 'باستا',                   fr: 'Pâtes',               ru: 'Паста',                   es: 'Pasta',             pl: 'Makaron',         de: 'Pasta',           it: 'Pasta' },
+  pizza:           { en: 'Pizza',             ar: 'بيتزا',                   fr: 'Pizza',               ru: 'Пицца',                   es: 'Pizza',             pl: 'Pizza',           de: 'Pizza',           it: 'Pizza' },
+  desserts:        { en: 'Desserts',          ar: 'حلويات',                  fr: 'Desserts',            ru: 'Десерты',                 es: 'Postres',           pl: 'Desery',          de: 'Desserts',        it: 'Dolci' },
+  drinks:          { en: 'Drinks',            ar: 'المشروبات',               fr: 'Boissons',            ru: 'Напитки',                 es: 'Bebidas',           pl: 'Napoje',          de: 'Getränke',        it: 'Bevande' },
+  hot_drinks:      { en: 'Hot Drinks',        ar: 'مشروبات ساخنة',           fr: 'Boissons Chaudes',    ru: 'Горячие напитки',         es: 'Bebidas Calientes', pl: 'Napoje Gorące',   de: 'Heißgetränke',    it: 'Bevande Calde' },
+  soft_drinks:     { en: 'Soft Drinks',       ar: 'مشروبات غازية',           fr: 'Boissons Gazeuses',   ru: 'Безалкогольные напитки',  es: 'Refrescos',         pl: 'Napoje Gazowane', de: 'Softdrinks',      it: 'Bibite' },
+  iced_drinks:     { en: 'Iced Drinks',       ar: 'مشروبات مثلجة',           fr: 'Boissons Glacées',    ru: 'Холодные напитки',        es: 'Bebidas con Hielo', pl: 'Napoje z Lodem',  de: 'Eisgetränke',     it: 'Bevande Ghiacciate' },
+  milkshake:       { en: 'Milk Shake',        ar: 'ميلك شيك',                fr: 'Milk-shake',          ru: 'Молочный коктейль',       es: 'Batido',            pl: 'Koktajl Mleczny', de: 'Milchshake',      it: 'Frappè' },
+  fresh_juice:     { en: 'Fresh Juice',       ar: 'عصير طازج',               fr: 'Jus Frais',           ru: 'Свежий сок',              es: 'Jugo Fresco',       pl: 'Świeży Sok',      de: 'Frischer Saft',   it: 'Succo Fresco' },
+  fresh_cocktails: { en: 'Fresh Cocktails',   ar: 'كوكتيلات طازجة',          fr: 'Cocktails Frais',     ru: 'Свежие коктейли',         es: 'Cócteles Frescos',  pl: 'Świeże Koktajle', de: 'Frische Cocktails', it: 'Cocktail Freschi' },
+  mocktails:       { en: 'Mocktails',         ar: 'موكتيلات',                fr: 'Mocktails',           ru: 'Безалкогольные коктейли', es: 'Mocktails',         pl: 'Mocktaile',       de: 'Mocktails',       it: 'Mocktail' },
+  cocktails:       { en: 'Cocktails',         ar: 'كوكتيلات',                fr: 'Cocktails',           ru: 'Коктейли',                es: 'Cócteles',          pl: 'Koktajle',        de: 'Cocktails',       it: 'Cocktail' },
+  shoots:          { en: 'Shoots',            ar: 'شوتس',                    fr: 'Shots',               ru: 'Шоты',                    es: 'Shots',             pl: 'Shoty',           de: 'Shots',           it: 'Shot' },
+  wine:            { en: 'Wine',              ar: 'نبيذ',                    fr: 'Vin',                 ru: 'Вино',                    es: 'Vino',              pl: 'Wino',            de: 'Wein',            it: 'Vino' },
+  beer:            { en: 'Beer',              ar: 'بيرة',                    fr: 'Bière',               ru: 'Пиво',                    es: 'Cerveza',           pl: 'Piwo',            de: 'Bier',            it: 'Birra' },
+  shisha:          { en: 'Shisha Pipes',      ar: 'الشيشة',                  fr: 'Chichas',             ru: 'Кальяны',                 es: 'Shisha',            pl: 'Fajki Wodne',     de: 'Shisha',          it: 'Narghilè' },
+  nuts_mazza:      { en: 'Nuts & Mazza',      ar: 'مكسرات ومزة',             fr: 'Noix & Mezzés',       ru: 'Орехи и мезе',            es: 'Frutos Secos y Mazza', pl: 'Orzechy i Mazza', de: 'Nüsse & Mazza',  it: 'Frutta Secca e Mazza' },
+  billiards:       { en: 'Billiards',         ar: 'بلياردو',                 fr: 'Billard',             ru: 'Бильярд',                 es: 'Billar',            pl: 'Bilard',          de: 'Billard',         it: 'Biliardo' },
 };
+
+/* Builds one language's category tree: { id, name, children:[...] } for
+   branch nodes, or { id, name, items:[] } for leaf nodes (empty for now). */
+function buildCategory(node, lang) {
+  const names = CATEGORY_NAMES[node.key] || {};
+  const name = names[lang] || names.en || node.key;
+  if (node.children) {
+    return { id: node.key, name, children: node.children.map(c => buildCategory(c, lang)) };
+  }
+  return { id: node.key, name, items: [] };
+}
+
+const menuData = {};
+LANGS.forEach(l => { menuData[l.code] = CATEGORY_TREE.map(n => buildCategory(n, l.code)); });
 
 function getLang() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -370,6 +284,23 @@ function applyDocumentDirection(lang) {
   document.body.classList.toggle('lang-ar', lang === 'ar');
 }
 
+/* ── Theme (dark / light) ──
+   Dark is the default. Persisted the same way as language, and read
+   again in a tiny inline head-script on each page so the correct
+   theme applies before first paint (no flash of the wrong theme). */
+function getTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  return saved === 'light' ? 'light' : 'dark';
+}
+
+function saveTheme(theme) {
+  localStorage.setItem(THEME_KEY, theme === 'light' ? 'light' : 'dark');
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme === 'light' ? 'light' : 'dark');
+}
+
 /* Translates every element with data-i18n="key" (textContent) for the given lang. */
 function applyTranslations(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -383,4 +314,5 @@ function applyTranslations(lang) {
 window.CafeI18n = {
   STORAGE_KEY, LANGS, dict, menuData,
   getLang, saveLang, t, applyDocumentDirection, applyTranslations,
+  THEME_KEY, getTheme, saveTheme, applyTheme,
 };

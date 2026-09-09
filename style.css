@@ -4,19 +4,40 @@
 ══════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap');
 
-:root {
-  --bg:        #1c130c;
-  --bg-deep:   #150e08;
-  --panel:     #2a1d13;
-  --panel-2:   #332417;
-  --line-soft: #4a3423;
+:root,
+:root[data-theme="dark"] {
+  --bg:        #0a0a0a;
+  --bg-deep:   #000000;
+  --panel:     #141414;
+  --panel-2:   #1c1c1c;
+  --line-soft: #2c2a26;
   --gold:      #c9a04b;
   --gold-soft: #e3c583;
   --gold-dim:  #8a6d38;
   --cream:     #f3e8d6;
   --cream-dim: #cdb99c;
   --muted:     #93816c;
-  --shadow:    rgba(0,0,0,.45);
+  --shadow:    rgba(0,0,0,.55);
+  --nav-h:     72px;
+}
+
+/* ══ LIGHT THEME ══
+   Only swaps background/surface/text tones — the gold accent family
+   stays the same brand color, just tuned a touch darker so it keeps
+   enough contrast against light surfaces. */
+:root[data-theme="light"] {
+  --bg:        #faf6ef;
+  --bg-deep:   #f1e9db;
+  --panel:     #ffffff;
+  --panel-2:   #f6efe3;
+  --line-soft: #e4d8c3;
+  --gold:      #a97a2e;
+  --gold-soft: #8c6221;
+  --gold-dim:  #c9a04b;
+  --cream:     #2a2016;
+  --cream-dim: #5b4d3c;
+  --muted:     #8a7860;
+  --shadow:    rgba(120,100,70,.18);
   --nav-h:     72px;
 }
 
@@ -33,6 +54,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  transition: background-color .35s ease, color .35s ease;
 }
 
 button, a { touch-action: manipulation; }
@@ -44,7 +66,9 @@ body::before {
   background:
     radial-gradient(ellipse 900px 600px at 50% -10%, rgba(201,160,75,.10), transparent 60%),
     radial-gradient(ellipse 800px 500px at 100% 100%, rgba(139,95,42,.08), transparent 60%);
+  transition: opacity .35s ease;
 }
+:root[data-theme="light"] body::before { opacity:.5; }
 
 /* ══ ARABIC / RTL ══ */
 body.lang-ar { font-family:'Cairo', sans-serif; }
@@ -154,6 +178,62 @@ a { color:inherit; }
 }
 
 /* ══════════════════════════════════════
+   THEME TOGGLE (dark / light)
+══════════════════════════════════════ */
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 56px;
+  height: 32px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: var(--panel-2);
+  cursor: pointer;
+  transition: background-color .3s ease, border-color .3s ease;
+}
+.theme-toggle:hover { border-color: var(--gold-dim); }
+.theme-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.theme-toggle-icon {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: color .3s ease;
+}
+.theme-toggle-icon svg { width: 100%; height: 100%; }
+.theme-toggle-icon.icon-sun  { left: 8px; }
+.theme-toggle-icon.icon-moon { right: 8px; }
+:root[data-theme="dark"]  .theme-toggle-icon.icon-moon { color: var(--gold-soft); }
+:root[data-theme="light"] .theme-toggle-icon.icon-sun  { color: var(--gold); }
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 2px 8px var(--shadow);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--bg-deep);
+  transition: transform .32s cubic-bezier(.65,0,.35,1), background-color .3s ease;
+}
+.theme-toggle-thumb svg { width: 13px; height: 13px; }
+:root[data-theme="light"] .theme-toggle-thumb { transform: translateX(24px); }
+
+/* Standalone placement on the intro/language page (no nav bar there) */
+.theme-toggle-standalone {
+  position: fixed;
+  top: calc(18px + env(safe-area-inset-top));
+  right: calc(18px + env(safe-area-inset-right));
+  z-index: 50;
+}
+
+/* ══════════════════════════════════════
    NAV (menu.html)
 ══════════════════════════════════════ */
 nav.site-nav {
@@ -165,6 +245,8 @@ nav.site-nav {
   display:flex; align-items:center; justify-content:space-between;
   padding-inline:clamp(16px,4vw,40px);
 }
+
+.nav-actions { display:flex; align-items:center; gap:12px; }
 
 /* Language switcher */
 .lang-switch { position:relative; }
@@ -246,6 +328,29 @@ nav.site-nav {
   font-size:22px; color:var(--gold-soft);
   letter-spacing:.5px; margin-bottom:4px;
   padding-bottom:14px; border-bottom:1px solid var(--line-soft);
+}
+
+/* Subcategories (e.g. Breakfast, Hot Drinks) nested under a main section */
+.menu-subsection { margin-top:28px; }
+.menu-subsection:first-of-type { margin-top:18px; }
+.menu-subsection-title {
+  font-family:'Fraunces', serif; font-weight:600;
+  font-size:16.5px; color:var(--gold);
+  letter-spacing:.3px; margin-bottom:4px;
+}
+
+/* Sub-subcategories (e.g. Meat / Chicken / Fish under Main Dishes) */
+.menu-subsubsection { margin-top:18px; margin-inline-start:14px; }
+.menu-subsubsection-title {
+  font-family:'Inter', sans-serif; font-weight:600;
+  font-size:12.5px; text-transform:uppercase; letter-spacing:1.5px;
+  color:var(--cream-dim); margin-bottom:2px;
+}
+
+/* Placeholder shown for any category with no items filled in yet */
+.menu-coming-soon {
+  font-size:12.5px; font-style:italic; color:var(--muted);
+  padding:14px 0 6px;
 }
 
 .menu-item {

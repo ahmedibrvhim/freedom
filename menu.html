@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1c130c">
+<meta name="theme-color" content="#0a0a0a" id="themeColorMeta">
 <title>Freedom — Menu</title>
 <link rel="stylesheet" href="style.css">
+<script>
+  (function () {
+    var t = localStorage.getItem('freedom_theme') === 'light' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 </head>
 <body>
 
@@ -25,12 +31,24 @@
     </span>
   </a>
 
-  <div class="lang-switch" id="langSwitch">
-    <button class="lang-switch-btn" id="langSwitchBtn" type="button">
-      <span id="langSwitchLabel">English</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  <div class="nav-actions">
+    <div class="lang-switch" id="langSwitch">
+      <button class="lang-switch-btn" id="langSwitchBtn" type="button">
+        <span id="langSwitchLabel">English</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="lang-switch-menu" id="langSwitchMenu"></div>
+    </div>
+
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch between dark and light theme">
+      <span class="theme-toggle-icon icon-sun">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </span>
+      <span class="theme-toggle-icon icon-moon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+      </span>
+      <span class="theme-toggle-thumb" id="themeToggleThumb"></span>
     </button>
-    <div class="lang-switch-menu" id="langSwitchMenu"></div>
   </div>
 </nav>
 
@@ -106,24 +124,45 @@ function renderTabs() {
   });
 }
 
+function renderItems(items, currency) {
+  if (!items.length) {
+    return `<p class="menu-coming-soon">${CafeI18n.t('menu_coming_soon', lang)}</p>`;
+  }
+  return items.map(item => `
+    <div class="menu-item">
+      <div class="menu-item-row">
+        <span class="menu-item-name">${item.name}</span>
+        <span class="menu-item-leader"></span>
+        <span class="menu-item-price">${item.price} ${currency}</span>
+      </div>
+      <p class="menu-item-desc">${item.desc}</p>
+    </div>
+  `).join('');
+}
+
+/* Renders a category at any depth: level 1 = top-level section (Food,
+   Drinks, Shisha Pipes...), level 2 = subcategory (Breakfast, Hot
+   Drinks...), level 3 = sub-subcategory (Meat, Chicken, Fish under Main
+   Dishes). Only level-1 sections get the scroll-target id used by tabs. */
+function renderCategory(cat, level, currency) {
+  const headingTag   = level === 1 ? 'h2' : level === 2 ? 'h3' : 'h4';
+  const headingClass = level === 1 ? 'menu-section-title' : level === 2 ? 'menu-subsection-title' : 'menu-subsubsection-title';
+  const wrapTag       = level === 1 ? 'section' : 'div';
+  const wrapClass     = level === 1 ? 'menu-section' : level === 2 ? 'menu-subsection' : 'menu-subsubsection';
+  const idAttr        = level === 1 ? ` id="sec-${cat.id}"` : '';
+  const body = cat.children
+    ? cat.children.map(child => renderCategory(child, level + 1, currency)).join('')
+    : renderItems(cat.items || [], currency);
+  return `<${wrapTag} class="${wrapClass}"${idAttr}>
+      <${headingTag} class="${headingClass}">${cat.name}</${headingTag}>
+      ${body}
+    </${wrapTag}>`;
+}
+
 function renderMenu() {
   const cats = MENU_DATA[lang];
   const currency = CafeI18n.t('currency', lang);
-  menuBody.innerHTML = cats.map(c => `
-    <section class="menu-section" id="sec-${c.id}">
-      <h2 class="menu-section-title">${c.name}</h2>
-      ${c.items.map(item => `
-        <div class="menu-item">
-          <div class="menu-item-row">
-            <span class="menu-item-name">${item.name}</span>
-            <span class="menu-item-leader"></span>
-            <span class="menu-item-price">${item.price} ${currency}</span>
-          </div>
-          <p class="menu-item-desc">${item.desc}</p>
-        </div>
-      `).join('')}
-    </section>
-  `).join('');
+  menuBody.innerHTML = cats.map(c => renderCategory(c, 1, currency)).join('');
 }
 
 function setLang(code) {
@@ -155,6 +194,23 @@ document.addEventListener('click', (e) => {
 });
 
 setLang(lang);
+
+/* ── Theme toggle ── */
+const themeToggle = document.getElementById('themeToggle');
+const themeColorMeta = document.getElementById('themeColorMeta');
+
+function reflectThemeColor(theme) {
+  themeColorMeta.setAttribute('content', theme === 'light' ? '#faf6ef' : '#0a0a0a');
+}
+
+reflectThemeColor(CafeI18n.getTheme());
+
+themeToggle.addEventListener('click', () => {
+  const next = CafeI18n.getTheme() === 'light' ? 'dark' : 'light';
+  CafeI18n.saveTheme(next);
+  CafeI18n.applyTheme(next);
+  reflectThemeColor(next);
+});
 </script>
 </body>
 </html>

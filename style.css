@@ -333,6 +333,14 @@ nav.site-nav {
   padding-bottom:14px; border-bottom:1px solid var(--line-soft);
 }
 
+/* Optional one-line explainer under a category's name (CATEGORY_HINTS
+   in i18n.js) — e.g. clarifying what "Mazza" or "Shoots" means for a
+   foreign guest. Only renders when hint text is set for that language. */
+.menu-hint {
+  font-size:12px; color:var(--muted); font-style:italic;
+  line-height:1.5; margin:-2px 0 14px; max-width:56ch;
+}
+
 /* Subcategories (e.g. Breakfast, Hot Drinks) nested under a main section */
 .menu-subsection { margin-top:28px; }
 .menu-subsection:first-of-type { margin-top:18px; }

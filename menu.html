@@ -120,6 +120,13 @@ function renderTabs() {
   });
 }
 
+/* Renders a category's optional one-line hint (only if non-empty for
+   this language) right under its name — this is where the
+   CATEGORY_HINTS text from i18n.js shows up for guests. */
+function renderHint(hint) {
+  return hint ? `<p class="menu-hint">${hint}</p>` : '';
+}
+
 function renderItems(items, currency) {
   if (!items.length) {
     return `<p class="menu-coming-soon">${CafeI18n.t('menu_coming_soon', lang)}</p>`;
@@ -151,6 +158,7 @@ function renderCategory(cat, level, currency) {
     : renderItems(cat.items || [], currency);
   return `<${wrapTag} class="${wrapClass}"${idAttr}>
       <${headingTag} class="${headingClass}">${cat.name}</${headingTag}>
+      ${renderHint(cat.hint)}
       ${body}
     </${wrapTag}>`;
 }

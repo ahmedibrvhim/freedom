@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1c130c">
+<title>Freedom — Menu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand-mark" href="index.html">
+    <svg class="brand-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M29 58c-1.5-12 0.5-23 7-32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c-8-3-17-2-23 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c-9 1-16 6-19 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c1-9 7-15 16-17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c7-3 15-2 20 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c-1-9-6-15-14-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M36 26c8 1 14 7 15 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <span>
+      <span class="brand-word" id="brandWord">Freedom</span>
+    </span>
+  </a>
+
+  <div class="lang-switch" id="langSwitch">
+    <button class="lang-switch-btn" id="langSwitchBtn" type="button">
+      <span id="langSwitchLabel">English</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="lang-switch-menu" id="langSwitchMenu"></div>
+  </div>
+</nav>
+
+<header class="menu-hero">
+  <div class="menu-hero-eyebrow" id="menuHeroEyebrow">Menu</div>
+  <div class="menu-hero-title" id="menuHeroTitle">Freedom</div>
+  <div class="menu-hero-sub" id="menuHeroSub">Roasted daily, served with care.</div>
+</header>
+
+<div class="cat-tabs" id="catTabs"></div>
+
+<main class="menu-body" id="menuBody"></main>
+
+<footer class="site-foot">
+  <div class="foot-brand" id="footBrand">Freedom</div>
+  <div class="foot-row"><span class="label" id="footHoursLabel">Open daily</span><span id="footHoursValue">8:00 – 22:00</span></div>
+  <div class="foot-row"><span class="label" id="footAddressLabel">Find us</span><span id="footAddressValue">123 Coffee Street, Giza</span></div>
+  <div class="foot-note" id="footNote">Prices include tax. Ask your server about seasonal specials.</div>
+</footer>
+
+<script src="i18n.js"></script>
+<script>
+const LANG_LIST = CafeI18n.LANGS;
+const MENU_DATA = CafeI18n.menuData;
+
+let lang = CafeI18n.getLang() || 'en';
+CafeI18n.applyDocumentDirection(lang);
+
+const brandWord      = document.getElementById('brandWord');
+const langSwitch      = document.getElementById('langSwitch');
+const langSwitchBtn   = document.getElementById('langSwitchBtn');
+const langSwitchLabel = document.getElementById('langSwitchLabel');
+const langSwitchMenu  = document.getElementById('langSwitchMenu');
+const menuHeroEyebrow = document.getElementById('menuHeroEyebrow');
+const menuHeroTitle   = document.getElementById('menuHeroTitle');
+const menuHeroSub     = document.getElementById('menuHeroSub');
+const catTabs         = document.getElementById('catTabs');
+const menuBody        = document.getElementById('menuBody');
+const footBrand       = document.getElementById('footBrand');
+const footHoursLabel  = document.getElementById('footHoursLabel');
+const footHoursValue  = document.getElementById('footHoursValue');
+const footAddressLabel= document.getElementById('footAddressLabel');
+const footAddressValue= document.getElementById('footAddressValue');
+const footNote        = document.getElementById('footNote');
+
+let activeCat = null;
+
+function renderLangMenu() {
+  langSwitchMenu.innerHTML = LANG_LIST.map(l => `
+    <button class="lang-switch-item${l.code === lang ? ' active' : ''}" data-code="${l.code}" type="button">
+      <span>${l.label}</span>
+    </button>
+  `).join('');
+  langSwitchMenu.querySelectorAll('.lang-switch-item').forEach(item => {
+    item.addEventListener('click', () => {
+      setLang(item.dataset.code);
+      langSwitch.classList.remove('open');
+    });
+  });
+}
+
+function renderTabs() {
+  const cats = MENU_DATA[lang];
+  catTabs.innerHTML = cats.map(c => `
+    <button class="cat-tab${c.id === activeCat ? ' active' : ''}" data-id="${c.id}" type="button">${c.name}</button>
+  `).join('');
+  catTabs.querySelectorAll('.cat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      activeCat = tab.dataset.id;
+      renderTabs();
+      document.getElementById('sec-' + activeCat)?.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+}
+
+function renderMenu() {
+  const cats = MENU_DATA[lang];
+  const currency = CafeI18n.t('currency', lang);
+  menuBody.innerHTML = cats.map(c => `
+    <section class="menu-section" id="sec-${c.id}">
+      <h2 class="menu-section-title">${c.name}</h2>
+      ${c.items.map(item => `
+        <div class="menu-item">
+          <div class="menu-item-row">
+            <span class="menu-item-name">${item.name}</span>
+            <span class="menu-item-leader"></span>
+            <span class="menu-item-price">${item.price} ${currency}</span>
+          </div>
+          <p class="menu-item-desc">${item.desc}</p>
+        </div>
+      `).join('')}
+    </section>
+  `).join('');
+}
+
+function setLang(code) {
+  lang = code;
+  CafeI18n.saveLang(lang);
+  CafeI18n.applyDocumentDirection(lang);
+  activeCat = MENU_DATA[lang][0].id;
+
+  brandWord.textContent = CafeI18n.t('brand_name', lang);
+  footBrand.textContent = CafeI18n.t('brand_name', lang);
+  langSwitchLabel.textContent = LANG_LIST.find(l => l.code === lang).label;
+  menuHeroEyebrow.textContent = CafeI18n.t('nav_menu', lang);
+  menuHeroTitle.textContent = CafeI18n.t('brand_name', lang);
+  menuHeroSub.textContent = CafeI18n.t('menu_hero_sub', lang);
+  footHoursLabel.textContent = CafeI18n.t('footer_hours_label', lang);
+  footHoursValue.textContent = CafeI18n.t('footer_hours_value', lang);
+  footAddressLabel.textContent = CafeI18n.t('footer_address_label', lang);
+  footAddressValue.textContent = CafeI18n.t('footer_address_value', lang);
+  footNote.textContent = CafeI18n.t('footer_note', lang);
+
+  renderLangMenu();
+  renderTabs();
+  renderMenu();
+}
+
+langSwitchBtn.addEventListener('click', () => langSwitch.classList.toggle('open'));
+document.addEventListener('click', (e) => {
+  if (!langSwitch.contains(e.target)) langSwitch.classList.remove('open');
+});
+
+setLang(lang);
+</script>
+</body>
+</html>

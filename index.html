@@ -50,28 +50,15 @@ langGrid.innerHTML = LANG_LIST.map(l => `
   </button>
 `).join('');
 
-/* Preview the intro copy in a language when its button is focused/hovered,
-   so the page feels alive before a choice is made. */
-function previewLang(code) {
-  introEyebrow.textContent = CafeI18n.t('intro_eyebrow', code);
-  introTagline.textContent = CafeI18n.t('brand_tag', code);
-  introPrompt.textContent  = CafeI18n.t('intro_prompt', code);
-  introSub.textContent     = CafeI18n.t('intro_sub', code);
-  document.body.classList.toggle('lang-ar', code === 'ar');
-}
-
+/* Selecting a language only affects the menu page — the intro page
+   itself always stays in its default display language. */
 langGrid.querySelectorAll('.lang-btn').forEach(btn => {
   const code = btn.dataset.code;
-  btn.addEventListener('mouseenter', () => previewLang(code));
-  btn.addEventListener('focus', () => previewLang(code));
   btn.addEventListener('click', () => {
     CafeI18n.saveLang(code);
-    CafeI18n.applyDocumentDirection(code);
     window.location.href = 'menu.html';
   });
 });
-
-langGrid.addEventListener('mouseleave', () => previewLang('en'));
 
 /* Little multilingual footer line cycling through "select a language" translations. */
 introFoot.textContent = LANG_LIST.map(l => l.label).join(' · ');

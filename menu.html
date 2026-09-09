@@ -116,11 +116,7 @@ function renderTabs() {
     <button class="cat-tab${c.id === activeCat ? ' active' : ''}" data-id="${c.id}" type="button">${c.name}</button>
   `).join('');
   catTabs.querySelectorAll('.cat-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      activeCat = tab.dataset.id;
-      renderTabs();
-      document.getElementById('sec-' + activeCat)?.scrollIntoView({ behavior:'smooth', block:'start' });
-    });
+    tab.addEventListener('click', () => switchCategory(tab.dataset.id));
   });
 }
 
@@ -162,7 +158,23 @@ function renderCategory(cat, level, currency) {
 function renderMenu() {
   const cats = MENU_DATA[lang];
   const currency = CafeI18n.t('currency', lang);
-  menuBody.innerHTML = cats.map(c => renderCategory(c, 1, currency)).join('');
+  const active = cats.find(c => c.id === activeCat) || cats[0];
+  menuBody.innerHTML = renderCategory(active, 1, currency);
+}
+
+/* Swaps the visible category with a short fade instead of an instant
+   cut, then scrolls the panel into view (useful once a category's
+   content is taller/shorter than the previous one). */
+function switchCategory(id) {
+  if (id === activeCat) return;
+  activeCat = id;
+  renderTabs();
+  menuBody.classList.add('is-switching');
+  window.setTimeout(() => {
+    renderMenu();
+    menuBody.classList.remove('is-switching');
+    menuBody.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 180);
 }
 
 function setLang(code) {

@@ -18,6 +18,7 @@
   --cream-dim: #cdb99c;
   --muted:     #93816c;
   --shadow:    rgba(0,0,0,.55);
+  --nav-bg:    rgba(10,10,10,.92);
   --nav-h:     72px;
 }
 
@@ -38,6 +39,7 @@
   --cream-dim: #5b4d3c;
   --muted:     #8a7860;
   --shadow:    rgba(120,100,70,.18);
+  --nav-bg:    rgba(255,255,255,.88);
   --nav-h:     72px;
 }
 
@@ -240,7 +242,7 @@ nav.site-nav {
   position:sticky; top:0; z-index:100;
   min-height:var(--nav-h);
   padding-top:env(safe-area-inset-top);
-  background:rgba(21,14,8,.92); backdrop-filter:blur(10px);
+  background:var(--nav-bg); backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line-soft);
   display:flex; align-items:center; justify-content:space-between;
   padding-inline:clamp(16px,4vw,40px);
@@ -321,7 +323,8 @@ nav.site-nav {
 .cat-tab.active { background:var(--gold); border-color:var(--gold); color:var(--bg-deep); font-weight:600; }
 
 /* Menu sections */
-.menu-body { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 20px 80px; }
+.menu-body { position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 20px 80px; transition:opacity .18s ease; }
+.menu-body.is-switching { opacity:0; }
 .menu-section { margin-bottom:56px; }
 .menu-section-title {
   font-family:'Fraunces', serif; font-weight:600;

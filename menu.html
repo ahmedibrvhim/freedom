@@ -10,6 +10,11 @@
   (function () {
     var t = localStorage.getItem('freedom_theme') === 'light' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
+    // Arabic is the reference/default language, so set lang/dir before
+    // first paint to avoid a flash of LTR layout on load.
+    var l = localStorage.getItem('freedom_lang') || 'ar';
+    document.documentElement.setAttribute('lang', l);
+    document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
   })();
 </script>
 </head>
@@ -74,7 +79,7 @@
 const LANG_LIST = CafeI18n.LANGS;
 const MENU_DATA = CafeI18n.menuData;
 
-let lang = CafeI18n.getLang() || 'en';
+let lang = CafeI18n.getLang() || 'ar'; // Arabic is the reference/default language
 CafeI18n.applyDocumentDirection(lang);
 
 const brandWord      = document.getElementById('brandWord');

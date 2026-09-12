@@ -3,14 +3,25 @@
    Persists the chosen language (localStorage) across index.html and
    menu.html, and holds the UI dictionary + full menu content for all
    eight supported languages.
+
+   ARABIC IS THE REFERENCE LANGUAGE.
+   The Arabic ("ar") text is the master copy of every label, hint, and
+   menu item — it's what the café actually wrote and means. Every
+   other language is a translation *of the Arabic*, not an
+   independent entry. That's why "ar" is listed first in LANGS, in
+   `dict`, in every CATEGORY_NAMES/CATEGORY_HINTS row, and right after
+   "price" in every ITEM_DATA entry: when adding or fixing content,
+   write/check the Arabic first, then translate the other seven
+   languages from it. Arabic is also the default language shown before
+   a guest picks one (see getLang()/menu.html).
 ══════════════════════════════════════ */
 
 const STORAGE_KEY = 'freedom_lang';
 const THEME_KEY = 'freedom_theme';
 
 const LANGS = [
-  { code: 'en', dir: 'ltr', label: 'English' },
   { code: 'ar', dir: 'rtl', label: 'العربية' },
+  { code: 'en', dir: 'ltr', label: 'English' },
   { code: 'fr', dir: 'ltr', label: 'Français' },
   { code: 'ru', dir: 'ltr', label: 'Русский' },
   { code: 'es', dir: 'ltr', label: 'Español' },
@@ -20,25 +31,6 @@ const LANGS = [
 ];
 
 const dict = {
-  en: {
-    brand_name: 'Freedom',
-    brand_tag: 'Lounge, Bar & Restaurant',
-    intro_eyebrow: 'Welcome',
-    intro_prompt: 'Choose your language',
-    intro_sub: 'Select a language to view the menu.',
-    nav_menu: 'Menu',
-    change_language: 'Change language',
-    menu_hero_title: 'Our Menu',
-    menu_hero_sub: 'Coffee by day, cocktails by night.',
-    currency: 'E£',
-    footer_hours_label: 'Open daily',
-    footer_hours_value: '24 Hours',
-    footer_address_label: 'Find us',
-    footer_address_value: 'Arabia, Florenza 50, in front of El Salam Hospital, Corniche St., Hurghada 1, Red Sea Governorate 84511',
-    footer_note: 'Prices include tax. Ask your server about seasonal specials.',
-    back_link: '← Back',
-    menu_coming_soon: 'Coming soon',
-  },
   ar: {
     brand_name: 'Freedom',
     brand_tag: 'لاونج وبار ومطعم',
@@ -57,6 +49,25 @@ const dict = {
     footer_note: 'الأسعار شاملة الضريبة. اسأل النادل عن العروض الموسمية.',
     back_link: '→ رجوع',
     menu_coming_soon: 'قريباً',
+  },
+  en: {
+    brand_name: 'Freedom',
+    brand_tag: 'Lounge, Bar & Restaurant',
+    intro_eyebrow: 'Welcome',
+    intro_prompt: 'Choose your language',
+    intro_sub: 'Select a language to view the menu.',
+    nav_menu: 'Menu',
+    change_language: 'Change language',
+    menu_hero_title: 'Our Menu',
+    menu_hero_sub: 'Coffee by day, cocktails by night.',
+    currency: 'E£',
+    footer_hours_label: 'Open daily',
+    footer_hours_value: '24 Hours',
+    footer_address_label: 'Find us',
+    footer_address_value: 'Arabia, Florenza 50, in front of El Salam Hospital, Corniche St., Hurghada 1, Red Sea Governorate 84511',
+    footer_note: 'Prices include tax. Ask your server about seasonal specials.',
+    back_link: '← Back',
+    menu_coming_soon: 'Coming soon',
   },
   fr: {
     brand_name: 'Freedom',
@@ -216,34 +227,34 @@ const CATEGORY_TREE = [
    menu page read naturally in whichever language the guest picked
    (previously these were English-only regardless of language). */
 const CATEGORY_NAMES = {
-  food:            { en:'Food',            ar:'الطعام',                  fr:'Nourriture',        ru:'Еда',                     es:'Comida',             pl:'Jedzenie',        de:'Essen',              it:'Cibo' },
-  breakfast:       { en:'Breakfast',       ar:'الإفطار',                 fr:'Petit-déjeuner',    ru:'Завтрак',                 es:'Desayuno',           pl:'Śniadanie',       de:'Frühstück',          it:'Colazione' },
-  appetizers:      { en:'Appetizers',      ar:'المقبلات',                fr:'Entrées',           ru:'Закуски',                 es:'Entrantes',          pl:'Przystawki',      de:'Vorspeisen',         it:'Antipasti' },
-  salads:          { en:'Salads',          ar:'السلطات',                 fr:'Salades',           ru:'Салаты',                  es:'Ensaladas',          pl:'Sałatki',         de:'Salate',             it:'Insalate' },
-  soup:            { en:'Soup',            ar:'الشوربة',                 fr:'Soupes',            ru:'Супы',                    es:'Sopas',              pl:'Zupy',            de:'Suppen',             it:'Zuppe' },
-  sandwiches:      { en:'Sandwiches',      ar:'الساندويتشات',            fr:'Sandwiches',        ru:'Сэндвичи',                es:'Sándwiches',         pl:'Kanapki',         de:'Sandwiches',         it:'Panini' },
-  main_dishes:     { en:'Main Dishes',     ar:'الأطباق الرئيسية',        fr:'Plats principaux',  ru:'Основные блюда',          es:'Platos principales', pl:'Dania główne',    de:'Hauptgerichte',      it:'Piatti principali' },
-  meat:            { en:'Meat',            ar:'اللحوم',                  fr:'Viandes',           ru:'Мясо',                    es:'Carnes',             pl:'Mięso',           de:'Fleisch',            it:'Carne' },
-  chicken:         { en:'Chicken',         ar:'الدجاج',                  fr:'Poulet',            ru:'Курица',                  es:'Pollo',              pl:'Kurczak',         de:'Hähnchen',           it:'Pollo' },
-  fish:            { en:'Fish',            ar:'الأسماك',                 fr:'Poissons',          ru:'Рыба',                    es:'Pescado',            pl:'Ryby',            de:'Fisch',              it:'Pesce' },
-  pasta:           { en:'Pasta',           ar:'المكرونة',                fr:'Pâtes',             ru:'Паста',                   es:'Pasta',              pl:'Makaron',         de:'Pasta',              it:'Pasta' },
-  pizza:           { en:'Pizza',           ar:'البيتزا',                 fr:'Pizza',             ru:'Пицца',                   es:'Pizza',              pl:'Pizza',           de:'Pizza',              it:'Pizza' },
-  desserts:        { en:'Desserts',        ar:'الحلويات',                fr:'Desserts',          ru:'Десерты',                 es:'Postres',            pl:'Desery',          de:'Desserts',           it:'Dessert' },
-  drinks:          { en:'Drinks',          ar:'المشروبات',               fr:'Boissons',          ru:'Напитки',                 es:'Bebidas',            pl:'Napoje',          de:'Getränke',           it:'Bevande' },
-  hot_drinks:      { en:'Hot Drinks',      ar:'المشروبات الساخنة',       fr:'Boissons chaudes',  ru:'Горячие напитки',         es:'Bebidas calientes',  pl:'Gorące napoje',   de:'Heiße Getränke',     it:'Bevande calde' },
-  soft_drinks:     { en:'Soft Drinks',     ar:'المشروبات الغازية',       fr:'Boissons gazeuses', ru:'Безалкогольные напитки',  es:'Refrescos',          pl:'Napoje gazowane', de:'Softdrinks',         it:'Bibite' },
-  iced_drinks:     { en:'Iced Drinks',     ar:'المشروبات المثلجة',       fr:'Boissons glacées',  ru:'Холодные напитки',        es:'Bebidas frías',      pl:'Zimne napoje',    de:'Eisgekühlte Getränke', it:'Bevande fredde' },
-  milkshake:       { en:'Milk Shake',      ar:'ميلك شيك',                fr:'Milk-shake',        ru:'Молочный коктейль',       es:'Batido',             pl:'Koktajl mleczny', de:'Milchshake',         it:'Frappè' },
-  fresh_juice:     { en:'Fresh Juice',     ar:'العصائر الطازجة',         fr:'Jus frais',         ru:'Свежевыжатые соки',       es:'Jugos frescos',      pl:'Świeże soki',     de:'Frische Säfte',      it:'Succhi freschi' },
-  fresh_cocktails: { en:'Fresh Cocktails', ar:'الكوكتيلات الطازجة',      fr:'Cocktails frais',   ru:'Свежие коктейли',         es:'Cócteles frescos',   pl:'Świeże koktajle', de:'Frische Cocktails',  it:'Cocktail freschi' },
-  mocktails:       { en:'Mocktails',       ar:'موكتيلز (بدون كحول)',     fr:'Mocktails',         ru:'Безалкогольные коктейли', es:'Mocktails',          pl:'Mocktaile',       de:'Mocktails',          it:'Mocktail' },
-  cocktails:       { en:'Cocktails',       ar:'الكوكتيلات',              fr:'Cocktails',         ru:'Коктейли',                es:'Cócteles',           pl:'Koktajle',        de:'Cocktails',          it:'Cocktail' },
-  shoots:          { en:'Shoots',          ar:'شوتس',                    fr:'Shots',             ru:'Шоты',                    es:'Chupitos',           pl:'Shoty',           de:'Shots',              it:'Shot' },
-  wine:            { en:'Wine',            ar:'النبيذ',                  fr:'Vin',               ru:'Вино',                    es:'Vino',               pl:'Wino',            de:'Wein',               it:'Vino' },
-  beer:            { en:'Beer',            ar:'البيرة',                  fr:'Bière',             ru:'Пиво',                    es:'Cerveza',            pl:'Piwo',            de:'Bier',               it:'Birra' },
-  shisha:          { en:'Shisha Pipes',    ar:'الشيشة',                  fr:'Chichas',           ru:'Кальян',                  es:'Shisha',             pl:'Fajka wodna',     de:'Shisha',             it:'Narghilè' },
-  nuts_mazza:      { en:'Nuts & Mazza',    ar:'المكسرات والمزة',         fr:'Noix & Mezze',      ru:'Орешки и мезе',           es:'Frutos secos y mezze', pl:'Orzechy i mezze', de:'Nüsse & Mezze',    it:'Noci e mezze' },
-  billiards:       { en:'Billiards',       ar:'البلياردو',               fr:'Billard',           ru:'Бильярд',                 es:'Billar',             pl:'Bilard',          de:'Billard',            it:'Biliardo' },
+  food:            {ar:'الطعام', en:'Food', fr:'Nourriture', ru:'Еда', es:'Comida', pl:'Jedzenie', de:'Essen', it:'Cibo'},
+  breakfast:       {ar:'الإفطار', en:'Breakfast', fr:'Petit-déjeuner', ru:'Завтрак', es:'Desayuno', pl:'Śniadanie', de:'Frühstück', it:'Colazione'},
+  appetizers:      {ar:'المقبلات', en:'Appetizers', fr:'Entrées', ru:'Закуски', es:'Entrantes', pl:'Przystawki', de:'Vorspeisen', it:'Antipasti'},
+  salads:          {ar:'السلطات', en:'Salads', fr:'Salades', ru:'Салаты', es:'Ensaladas', pl:'Sałatki', de:'Salate', it:'Insalate'},
+  soup:            {ar:'الشوربة', en:'Soup', fr:'Soupes', ru:'Супы', es:'Sopas', pl:'Zupy', de:'Suppen', it:'Zuppe'},
+  sandwiches:      {ar:'الساندويتشات', en:'Sandwiches', fr:'Sandwiches', ru:'Сэндвичи', es:'Sándwiches', pl:'Kanapki', de:'Sandwiches', it:'Panini'},
+  main_dishes:     {ar:'الأطباق الرئيسية', en:'Main Dishes', fr:'Plats principaux', ru:'Основные блюда', es:'Platos principales', pl:'Dania główne', de:'Hauptgerichte', it:'Piatti principali'},
+  meat:            {ar:'اللحوم', en:'Meat', fr:'Viandes', ru:'Мясо', es:'Carnes', pl:'Mięso', de:'Fleisch', it:'Carne'},
+  chicken:         {ar:'الدجاج', en:'Chicken', fr:'Poulet', ru:'Курица', es:'Pollo', pl:'Kurczak', de:'Hähnchen', it:'Pollo'},
+  fish:            {ar:'الأسماك', en:'Fish', fr:'Poissons', ru:'Рыба', es:'Pescado', pl:'Ryby', de:'Fisch', it:'Pesce'},
+  pasta:           {ar:'المكرونة', en:'Pasta', fr:'Pâtes', ru:'Паста', es:'Pasta', pl:'Makaron', de:'Pasta', it:'Pasta'},
+  pizza:           {ar:'البيتزا', en:'Pizza', fr:'Pizza', ru:'Пицца', es:'Pizza', pl:'Pizza', de:'Pizza', it:'Pizza'},
+  desserts:        {ar:'الحلويات', en:'Desserts', fr:'Desserts', ru:'Десерты', es:'Postres', pl:'Desery', de:'Desserts', it:'Dessert'},
+  drinks:          {ar:'المشروبات', en:'Drinks', fr:'Boissons', ru:'Напитки', es:'Bebidas', pl:'Napoje', de:'Getränke', it:'Bevande'},
+  hot_drinks:      {ar:'المشروبات الساخنة', en:'Hot Drinks', fr:'Boissons chaudes', ru:'Горячие напитки', es:'Bebidas calientes', pl:'Gorące napoje', de:'Heiße Getränke', it:'Bevande calde'},
+  soft_drinks:     {ar:'المشروبات الغازية', en:'Soft Drinks', fr:'Boissons gazeuses', ru:'Безалкогольные напитки', es:'Refrescos', pl:'Napoje gazowane', de:'Softdrinks', it:'Bibite'},
+  iced_drinks:     {ar:'المشروبات المثلجة', en:'Iced Drinks', fr:'Boissons glacées', ru:'Холодные напитки', es:'Bebidas frías', pl:'Zimne napoje', de:'Eisgekühlte Getränke', it:'Bevande fredde'},
+  milkshake:       {ar:'ميلك شيك', en:'Milk Shake', fr:'Milk-shake', ru:'Молочный коктейль', es:'Batido', pl:'Koktajl mleczny', de:'Milchshake', it:'Frappè'},
+  fresh_juice:     {ar:'العصائر الطازجة', en:'Fresh Juice', fr:'Jus frais', ru:'Свежевыжатые соки', es:'Jugos frescos', pl:'Świeże soki', de:'Frische Säfte', it:'Succhi freschi'},
+  fresh_cocktails: {ar:'الكوكتيلات الطازجة', en:'Fresh Cocktails', fr:'Cocktails frais', ru:'Свежие коктейли', es:'Cócteles frescos', pl:'Świeże koktajle', de:'Frische Cocktails', it:'Cocktail freschi'},
+  mocktails:       {ar:'موكتيلز (بدون كحول)', en:'Mocktails', fr:'Mocktails', ru:'Безалкогольные коктейли', es:'Mocktails', pl:'Mocktaile', de:'Mocktails', it:'Mocktail'},
+  cocktails:       {ar:'الكوكتيلات', en:'Cocktails', fr:'Cocktails', ru:'Коктейли', es:'Cócteles', pl:'Koktajle', de:'Cocktails', it:'Cocktail'},
+  shoots:          {ar:'شوتس', en:'Shoots', fr:'Shots', ru:'Шоты', es:'Chupitos', pl:'Shoty', de:'Shots', it:'Shot'},
+  wine:            {ar:'النبيذ', en:'Wine', fr:'Vin', ru:'Вино', es:'Vino', pl:'Wino', de:'Wein', it:'Vino'},
+  beer:            {ar:'البيرة', en:'Beer', fr:'Bière', ru:'Пиво', es:'Cerveza', pl:'Piwo', de:'Bier', it:'Birra'},
+  shisha:          {ar:'الشيشة', en:'Shisha Pipes', fr:'Chichas', ru:'Кальян', es:'Shisha', pl:'Fajka wodna', de:'Shisha', it:'Narghilè'},
+  nuts_mazza:      {ar:'المكسرات والمزة', en:'Nuts & Mazza', fr:'Noix & Mezze', ru:'Орешки и мезе', es:'Frutos secos y mezze', pl:'Orzechy i mezze', de:'Nüsse & Mezze', it:'Noci e mezze'},
+  billiards:       {ar:'البلياردو', en:'Billiards', fr:'Billard', ru:'Бильярд', es:'Billar', pl:'Bilard', de:'Billard', it:'Biliardo'},
 };
 
 /* ── Category hints ──
@@ -255,34 +266,34 @@ const CATEGORY_NAMES = {
    Fill the SAME meaning into every language column so all guests get
    the same explanation, just in their own language. */
 const CATEGORY_HINTS = {
-  food:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  breakfast:       { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  appetizers:      { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  salads:          { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  soup:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  sandwiches:      { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  main_dishes:     { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  meat:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  chicken:         { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  fish:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  pasta:           { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  pizza:           { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  desserts:        { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  drinks:          { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  hot_drinks:      { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  soft_drinks:     { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  iced_drinks:     { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  milkshake:       { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  fresh_juice:     { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  fresh_cocktails: { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  mocktails:       { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  cocktails:       { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  shoots:          { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  wine:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  beer:            { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  shisha:          { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  nuts_mazza:      { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
-  billiards:       { en:'', ar:'', fr:'', ru:'', es:'', pl:'', de:'', it:'' },
+  food:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  breakfast:       {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  appetizers:      {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  salads:          {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  soup:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  sandwiches:      {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  main_dishes:     {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  meat:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  chicken:         {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  fish:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  pasta:           {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  pizza:           {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  desserts:        {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  drinks:          {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  hot_drinks:      {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  soft_drinks:     {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  iced_drinks:     {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  milkshake:       {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  fresh_juice:     {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  fresh_cocktails: {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  mocktails:       {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  cocktails:       {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  shoots:          {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  wine:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  beer:            {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  shisha:          {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  nuts_mazza:      {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
+  billiards:       {ar:'', en:'', fr:'', ru:'', es:'', pl:'', de:'', it:''},
 };
 
 /* ── Menu items ──
@@ -294,13 +305,13 @@ const ITEM_DATA = {
   "breakfast": [
     {
       "price": "275",
-      "en": [
-        "English Breakfast",
-        "Eggs, sausage, fries, beans & toast"
-      ],
       "ar": [
         "فطور إنجليزي",
         "بيض، سجق، بطاطس، فول وتوست"
+      ],
+      "en": [
+        "English Breakfast",
+        "Eggs, sausage, fries, beans & toast"
       ],
       "fr": [
         "Petit-déjeuner anglais",
@@ -329,83 +340,83 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Oriental Breakfast",
-        "Ful, eggs, fries, cheese & fresh bread"
-      ],
       "ar": [
         "فطور شرقي",
         "فول، بيض، بطاطس، جبنة وخبز طازج"
       ],
+      "en": [
+        "Oriental Breakfast",
+        "Fava beans, eggs, fries, cheese & fresh bread"
+      ],
       "fr": [
         "Petit-déjeuner oriental",
-        "Ful, œufs, frites, fromage et pain frais"
+        "Fèves, œufs, frites, fromage et pain frais"
       ],
       "ru": [
         "Восточный завтрак",
-        "Фуль, яйца, картофель фри, сыр и свежий хлеб"
+        "Бобы, яйца, картофель фри, сыр и свежий хлеб"
       ],
       "es": [
         "Desayuno oriental",
-        "Ful, huevos, papas fritas, queso y pan fresco"
+        "Habas, huevos, papas fritas, queso y pan fresco"
       ],
       "pl": [
         "Śniadanie orientalne",
-        "Ful, jajka, frytki, ser i świeże pieczywo"
+        "Fasola, jajka, frytki, ser i świeże pieczywo"
       ],
       "de": [
         "Orientalisches Frühstück",
-        "Ful, Eier, Pommes, Käse & frisches Brot"
+        "Bohnen, Eier, Pommes, Käse & frisches Brot"
       ],
       "it": [
         "Colazione orientale",
-        "Ful, uova, patatine, formaggio e pane fresco"
+        "Fave, uova, patatine, formaggio e pane fresco"
       ]
     },
     {
       "price": "90",
-      "en": [
-        "Ful (Butter or Oil)",
-        "Slow-cooked fava beans"
-      ],
       "ar": [
         "فول (بالسمنة أو الزيت)",
         "فول مدمس مطهو ببطء"
       ],
+      "en": [
+        "Fava Beans (Butter or Oil)",
+        "Slow-cooked fava beans"
+      ],
       "fr": [
-        "Ful (beurre ou huile)",
+        "Fèves (beurre ou huile)",
         "Fèves mijotées lentement"
       ],
       "ru": [
-        "Фуль (масло сливочное/растительное)",
+        "Бобы (сливочное или растительное масло)",
         "Тушёные бобы фава"
       ],
       "es": [
-        "Ful (mantequilla o aceite)",
+        "Habas (mantequilla o aceite)",
         "Habas cocidas a fuego lento"
       ],
       "pl": [
-        "Ful (masło lub olej)",
+        "Fasola (masło lub olej)",
         "Wolno gotowana fasola bobowa"
       ],
       "de": [
-        "Ful (Butter oder Öl)",
+        "Favabohnen (Butter oder Öl)",
         "Langsam gegarte Favabohnen"
       ],
       "it": [
-        "Ful (burro o olio)",
+        "Fave (burro o olio)",
         "Fave cotte lentamente"
       ]
     },
     {
       "price": "130",
-      "en": [
-        "Omelet Veg / Cheese",
-        "Fluffy omelette, vegetables or cheese"
-      ],
       "ar": [
         "أومليت خضار / جبنة",
         "أومليت هش بالخضار أو الجبنة"
+      ],
+      "en": [
+        "Omelet Veg / Cheese",
+        "Fluffy omelette, vegetables or cheese"
       ],
       "fr": [
         "Omelette légumes / fromage",
@@ -434,13 +445,13 @@ const ITEM_DATA = {
     },
     {
       "price": "110",
-      "en": [
-        "Omelette",
-        "Classic plain omelette"
-      ],
       "ar": [
         "أومليت",
         "أومليت سادة كلاسيكي"
+      ],
+      "en": [
+        "Omelette",
+        "Classic plain omelette"
       ],
       "fr": [
         "Omelette",
@@ -469,13 +480,13 @@ const ITEM_DATA = {
     },
     {
       "price": "130",
-      "en": [
-        "Toast Cheese",
-        "Grilled toast, melted cheese"
-      ],
       "ar": [
         "توست بالجبنة",
         "توست مشوي بالجبنة الذائبة"
+      ],
+      "en": [
+        "Toast Cheese",
+        "Grilled toast, melted cheese"
       ],
       "fr": [
         "Toast au fromage",
@@ -504,13 +515,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Omelet Smoked Salmon",
-        "Omelette with smoked salmon"
-      ],
       "ar": [
         "أومليت سلمون مدخن",
         "أومليت بالسلمون المدخن"
+      ],
+      "en": [
+        "Omelet Smoked Salmon",
+        "Omelette with smoked salmon"
       ],
       "fr": [
         "Omelette saumon fumé",
@@ -539,13 +550,13 @@ const ITEM_DATA = {
     },
     {
       "price": "230",
-      "en": [
-        "Toast Smoked Salmon",
-        "Toasted bread, smoked salmon"
-      ],
       "ar": [
         "توست سلمون مدخن",
         "خبز محمص بالسلمون المدخن"
+      ],
+      "en": [
+        "Toast Smoked Salmon",
+        "Toasted bread, smoked salmon"
       ],
       "fr": [
         "Toast saumon fumé",
@@ -576,13 +587,13 @@ const ITEM_DATA = {
   "appetizers": [
     {
       "price": "110",
-      "en": [
-        "Garlic Bread",
-        "Toasted bread, garlic butter"
-      ],
       "ar": [
         "خبز بالثوم",
         "خبز محمص بزبدة الثوم"
+      ],
+      "en": [
+        "Garlic Bread",
+        "Toasted bread, garlic butter"
       ],
       "fr": [
         "Pain à l'ail",
@@ -611,13 +622,13 @@ const ITEM_DATA = {
     },
     {
       "price": "130",
-      "en": [
-        "Garlic Bread Mozzarella",
-        "Garlic bread, melted mozzarella"
-      ],
       "ar": [
         "خبز بالثوم والموزاريلا",
         "خبز بالثوم مع جبنة موزاريلا ذائبة"
+      ],
+      "en": [
+        "Garlic Bread Mozzarella",
+        "Garlic bread, melted mozzarella"
       ],
       "fr": [
         "Pain à l'ail mozzarella",
@@ -646,13 +657,13 @@ const ITEM_DATA = {
     },
     {
       "price": "135",
-      "en": [
-        "Bruschetta",
-        "Toasted bread, tomato & basil"
-      ],
       "ar": [
         "بروشيتا",
         "خبز محمص بالطماطم والريحان"
+      ],
+      "en": [
+        "Bruschetta",
+        "Toasted bread, tomato & basil"
       ],
       "fr": [
         "Bruschetta",
@@ -681,13 +692,13 @@ const ITEM_DATA = {
     },
     {
       "price": "120",
-      "en": [
-        "Onion Rings",
-        "Crispy battered onion rings"
-      ],
       "ar": [
         "حلقات بصل",
         "حلقات بصل مقرمشة مقلية"
+      ],
+      "en": [
+        "Onion Rings",
+        "Crispy battered onion rings"
       ],
       "fr": [
         "Rondelles d'oignon",
@@ -716,13 +727,13 @@ const ITEM_DATA = {
     },
     {
       "price": "85",
-      "en": [
-        "French Fries",
-        "Golden crispy fries"
-      ],
       "ar": [
         "بطاطس مقلية",
         "بطاطس مقرمشة ذهبية"
+      ],
+      "en": [
+        "French Fries",
+        "Golden crispy fries"
       ],
       "fr": [
         "Frites",
@@ -751,13 +762,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Nuggets",
-        "Crispy breaded chicken nuggets"
-      ],
       "ar": [
         "ناجتس",
         "قطع دجاج مقرمشة مقلية"
+      ],
+      "en": [
+        "Nuggets",
+        "Crispy breaded chicken nuggets"
       ],
       "fr": [
         "Nuggets",
@@ -786,13 +797,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Fried Calamari",
-        "Crispy fried squid rings"
-      ],
       "ar": [
         "كاليماري مقلي",
         "حلقات كاليماري مقرمشة مقلية"
+      ],
+      "en": [
+        "Fried Calamari",
+        "Crispy fried squid rings"
       ],
       "fr": [
         "Calamars frits",
@@ -821,13 +832,13 @@ const ITEM_DATA = {
     },
     {
       "price": "320",
-      "en": [
-        "Fried Shrimp",
-        "Crispy battered shrimp"
-      ],
       "ar": [
         "جمبري مقلي",
         "جمبري مقرمش مقلي"
+      ],
+      "en": [
+        "Fried Shrimp",
+        "Crispy battered shrimp"
       ],
       "fr": [
         "Crevettes frites",
@@ -856,13 +867,13 @@ const ITEM_DATA = {
     },
     {
       "price": "195",
-      "en": [
-        "Fried Mozzarella",
-        "Breaded mozzarella sticks"
-      ],
       "ar": [
         "موزاريلا مقلية",
         "أصابع موزاريلا مقرمشة"
+      ],
+      "en": [
+        "Fried Mozzarella",
+        "Breaded mozzarella sticks"
       ],
       "fr": [
         "Mozzarella frite",
@@ -891,13 +902,13 @@ const ITEM_DATA = {
     },
     {
       "price": "250",
-      "en": [
-        "Chicken Wings",
-        "Grilled or fried chicken wings"
-      ],
       "ar": [
         "أجنحة دجاج",
         "أجنحة دجاج مشوية أو مقلية"
+      ],
+      "en": [
+        "Chicken Wings",
+        "Grilled or fried chicken wings"
       ],
       "fr": [
         "Ailes de poulet",
@@ -926,13 +937,13 @@ const ITEM_DATA = {
     },
     {
       "price": "200",
-      "en": [
-        "Chicken Fingers",
-        "Crispy breaded chicken strips"
-      ],
       "ar": [
         "أصابع دجاج",
         "أصابع دجاج مقرمشة مقلية"
+      ],
+      "en": [
+        "Chicken Fingers",
+        "Crispy breaded chicken strips"
       ],
       "fr": [
         "Doigts de poulet",
@@ -963,13 +974,13 @@ const ITEM_DATA = {
   "salads": [
     {
       "price": "195",
-      "en": [
-        "Tuna Salad",
-        "Fresh greens, tuna & vegetables"
-      ],
       "ar": [
         "سلطة تونة",
         "خضار طازجة مع تونة"
+      ],
+      "en": [
+        "Tuna Salad",
+        "Fresh greens, tuna & vegetables"
       ],
       "fr": [
         "Salade au thon",
@@ -998,13 +1009,13 @@ const ITEM_DATA = {
     },
     {
       "price": "180",
-      "en": [
-        "Greek Salad",
-        "Tomato, cucumber, olives & feta"
-      ],
       "ar": [
         "سلطة يونانية",
         "طماطم، خيار، زيتون وجبنة فيتا"
+      ],
+      "en": [
+        "Greek Salad",
+        "Tomato, cucumber, olives & feta"
       ],
       "fr": [
         "Salade grecque",
@@ -1033,13 +1044,13 @@ const ITEM_DATA = {
     },
     {
       "price": "100",
-      "en": [
-        "Egyptian Salad",
-        "Chopped tomato, cucumber & herbs"
-      ],
       "ar": [
         "سلطة بلدي",
         "طماطم وخيار مفروم بالأعشاب"
+      ],
+      "en": [
+        "Egyptian Salad",
+        "Chopped tomato, cucumber & herbs"
       ],
       "fr": [
         "Salade égyptienne",
@@ -1068,13 +1079,13 @@ const ITEM_DATA = {
     },
     {
       "price": "260",
-      "en": [
-        "Shrimp Caesar Salad",
-        "Shrimp, romaine, parmesan & Caesar dressing"
-      ],
       "ar": [
         "سلطة سيزر بالجمبري",
         "جمبري، خس، جبنة بارميزان وصوص سيزر"
+      ],
+      "en": [
+        "Shrimp Caesar Salad",
+        "Shrimp, romaine, parmesan & Caesar dressing"
       ],
       "fr": [
         "Salade César aux crevettes",
@@ -1103,13 +1114,13 @@ const ITEM_DATA = {
     },
     {
       "price": "300",
-      "en": [
-        "Mix Sea Food Salad",
-        "Shrimp, calamari & mixed greens"
-      ],
       "ar": [
         "سلطة مأكولات بحرية",
         "جمبري وكاليماري مع خضار"
+      ],
+      "en": [
+        "Mix Sea Food Salad",
+        "Shrimp, calamari & mixed greens"
       ],
       "fr": [
         "Salade de fruits de mer",
@@ -1138,13 +1149,13 @@ const ITEM_DATA = {
     },
     {
       "price": "240",
-      "en": [
-        "Chicken Caesar Salad",
-        "Grilled chicken, romaine & Caesar dressing"
-      ],
       "ar": [
         "سلطة سيزر بالدجاج",
         "دجاج مشوي، خس وصوص سيزر"
+      ],
+      "en": [
+        "Chicken Caesar Salad",
+        "Grilled chicken, romaine & Caesar dressing"
       ],
       "fr": [
         "Salade César au poulet",
@@ -1173,13 +1184,13 @@ const ITEM_DATA = {
     },
     {
       "price": "300",
-      "en": [
-        "Rocket & Smoked Salmon",
-        "Arugula, smoked salmon & lemon"
-      ],
       "ar": [
         "جرجير وسلمون مدخن",
         "جرجير مع سلمون مدخن وليمون"
+      ],
+      "en": [
+        "Rocket & Smoked Salmon",
+        "Arugula, smoked salmon & lemon"
       ],
       "fr": [
         "Roquette et saumon fumé",
@@ -1208,13 +1219,13 @@ const ITEM_DATA = {
     },
     {
       "price": "200",
-      "en": [
-        "Caprese Salad",
-        "Tomato, mozzarella & basil"
-      ],
       "ar": [
         "سلطة كابريزي",
         "طماطم وموزاريلا وريحان"
+      ],
+      "en": [
+        "Caprese Salad",
+        "Tomato, mozzarella & basil"
       ],
       "fr": [
         "Salade Caprese",
@@ -1245,13 +1256,13 @@ const ITEM_DATA = {
   "soup": [
     {
       "price": "160",
-      "en": [
-        "Veggie Soup",
-        "Fresh seasonal vegetable soup"
-      ],
       "ar": [
         "شوربة خضار",
         "شوربة خضار طازجة"
+      ],
+      "en": [
+        "Veggie Soup",
+        "Fresh seasonal vegetable soup"
       ],
       "fr": [
         "Soupe de légumes",
@@ -1280,13 +1291,13 @@ const ITEM_DATA = {
     },
     {
       "price": "140",
-      "en": [
-        "Lentil Soup",
-        "Classic creamy lentil soup"
-      ],
       "ar": [
         "شوربة عدس",
         "شوربة عدس كلاسيكية"
+      ],
+      "en": [
+        "Lentil Soup",
+        "Classic creamy lentil soup"
       ],
       "fr": [
         "Soupe de lentilles",
@@ -1315,13 +1326,13 @@ const ITEM_DATA = {
     },
     {
       "price": "120",
-      "en": [
-        "Tomato Soup",
-        "Rich creamy tomato soup"
-      ],
       "ar": [
         "شوربة طماطم",
         "شوربة طماطم كريمية غنية"
+      ],
+      "en": [
+        "Tomato Soup",
+        "Rich creamy tomato soup"
       ],
       "fr": [
         "Soupe de tomates",
@@ -1350,13 +1361,13 @@ const ITEM_DATA = {
     },
     {
       "price": "250",
-      "en": [
-        "Chicken Cream Soup",
-        "Creamy chicken soup"
-      ],
       "ar": [
         "شوربة دجاج كريمي",
         "شوربة دجاج كريمية"
+      ],
+      "en": [
+        "Chicken Cream Soup",
+        "Creamy chicken soup"
       ],
       "fr": [
         "Crème de poulet",
@@ -1385,13 +1396,13 @@ const ITEM_DATA = {
     },
     {
       "price": "280",
-      "en": [
-        "Seafood Soup",
-        "Rich mixed seafood broth"
-      ],
       "ar": [
         "شوربة مأكولات بحرية",
         "مرق غني بالمأكولات البحرية"
+      ],
+      "en": [
+        "Seafood Soup",
+        "Rich mixed seafood broth"
       ],
       "fr": [
         "Soupe de fruits de mer",
@@ -1420,13 +1431,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Shrimp Soup",
-        "Creamy shrimp bisque"
-      ],
       "ar": [
         "شوربة جمبري",
         "شوربة جمبري كريمية"
+      ],
+      "en": [
+        "Shrimp Soup",
+        "Creamy shrimp bisque"
       ],
       "fr": [
         "Bisque de crevettes",
@@ -1457,13 +1468,13 @@ const ITEM_DATA = {
   "sandwiches": [
     {
       "price": "275",
-      "en": [
-        "Kofta Sandwich",
-        "Grilled minced meat kofta"
-      ],
       "ar": [
         "ساندويتش كفتة",
         "كفتة لحم مفروم مشوية"
+      ],
+      "en": [
+        "Kofta Sandwich",
+        "Grilled minced meat kofta"
       ],
       "fr": [
         "Sandwich kofta",
@@ -1492,13 +1503,13 @@ const ITEM_DATA = {
     },
     {
       "price": "250",
-      "en": [
-        "Beef Burger",
-        "Grilled beef patty in a bun"
-      ],
       "ar": [
         "برجر لحم",
         "قرص لحم مشوي في خبز البرجر"
+      ],
+      "en": [
+        "Beef Burger",
+        "Grilled beef patty in a bun"
       ],
       "fr": [
         "Burger bœuf",
@@ -1527,13 +1538,13 @@ const ITEM_DATA = {
     },
     {
       "price": "230",
-      "en": [
-        "Chicken Burger",
-        "Grilled chicken patty in a bun"
-      ],
       "ar": [
         "برجر دجاج",
         "قرص دجاج مشوي في خبز البرجر"
+      ],
+      "en": [
+        "Chicken Burger",
+        "Grilled chicken patty in a bun"
       ],
       "fr": [
         "Burger poulet",
@@ -1562,13 +1573,13 @@ const ITEM_DATA = {
     },
     {
       "price": "195",
-      "en": [
-        "Hot Dog",
-        "Grilled sausage in a soft bun"
-      ],
       "ar": [
         "هوت دوج",
         "سجق مشوي في خبز طري"
+      ],
+      "en": [
+        "Hot Dog",
+        "Grilled sausage in a soft bun"
       ],
       "fr": [
         "Hot-dog",
@@ -1597,13 +1608,13 @@ const ITEM_DATA = {
     },
     {
       "price": "210",
-      "en": [
-        "Chicken Shawarma",
-        "Spiced grilled chicken wrap"
-      ],
       "ar": [
         "شاورما دجاج",
         "لفة دجاج متبل مشوي"
+      ],
+      "en": [
+        "Chicken Shawarma",
+        "Spiced grilled chicken wrap"
       ],
       "fr": [
         "Chawarma poulet",
@@ -1632,13 +1643,13 @@ const ITEM_DATA = {
     },
     {
       "price": "230",
-      "en": [
-        "Meat Shawarma",
-        "Spiced grilled beef wrap"
-      ],
       "ar": [
         "شاورما لحم",
         "لفة لحم متبل مشوي"
+      ],
+      "en": [
+        "Meat Shawarma",
+        "Spiced grilled beef wrap"
       ],
       "fr": [
         "Chawarma viande",
@@ -1667,13 +1678,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Fried Shrimp Sandwich",
-        "Crispy shrimp in a soft bun"
-      ],
       "ar": [
         "ساندويتش جمبري مقلي",
         "جمبري مقرمش في خبز طري"
+      ],
+      "en": [
+        "Fried Shrimp Sandwich",
+        "Crispy shrimp in a soft bun"
       ],
       "fr": [
         "Sandwich crevettes frites",
@@ -1702,13 +1713,13 @@ const ITEM_DATA = {
     },
     {
       "price": "240",
-      "en": [
-        "Chicken Panini",
-        "Grilled chicken, toasted panini bread"
-      ],
       "ar": [
         "بانيني دجاج",
         "دجاج مشوي في خبز بانيني محمص"
+      ],
+      "en": [
+        "Chicken Panini",
+        "Grilled chicken, toasted panini bread"
       ],
       "fr": [
         "Panini poulet",
@@ -1737,13 +1748,13 @@ const ITEM_DATA = {
     },
     {
       "price": "260",
-      "en": [
-        "Fried Calamari Sandwich",
-        "Crispy calamari in a soft bun"
-      ],
       "ar": [
         "ساندويتش كاليماري مقلي",
         "كاليماري مقرمش في خبز طري"
+      ],
+      "en": [
+        "Fried Calamari Sandwich",
+        "Crispy calamari in a soft bun"
       ],
       "fr": [
         "Sandwich calamars frits",
@@ -1774,13 +1785,13 @@ const ITEM_DATA = {
   "meat": [
     {
       "price": "495",
-      "en": [
-        "Kofta",
-        "Grilled minced meat skewers"
-      ],
       "ar": [
         "كفتة",
         "أسياخ لحم مفروم مشوية"
+      ],
+      "en": [
+        "Kofta",
+        "Grilled minced meat skewers"
       ],
       "fr": [
         "Kofta",
@@ -1809,13 +1820,13 @@ const ITEM_DATA = {
     },
     {
       "price": "800",
-      "en": [
-        "Camel Steak",
-        "Grilled camel meat steak"
-      ],
       "ar": [
         "ستيك جمل",
         "ستيك لحم جمل مشوي"
+      ],
+      "en": [
+        "Camel Steak",
+        "Grilled camel meat steak"
       ],
       "fr": [
         "Steak de chameau",
@@ -1844,13 +1855,13 @@ const ITEM_DATA = {
     },
     {
       "price": "750",
-      "en": [
-        "Beef Fillet",
-        "Tender grilled beef fillet"
-      ],
       "ar": [
         "فيليه لحم",
         "فيليه لحم بقري مشوي طري"
+      ],
+      "en": [
+        "Beef Fillet",
+        "Tender grilled beef fillet"
       ],
       "fr": [
         "Filet de bœuf",
@@ -1879,13 +1890,13 @@ const ITEM_DATA = {
     },
     {
       "price": "895",
-      "en": [
-        "Mix Grill",
-        "Assorted grilled meats"
-      ],
       "ar": [
         "مشاوي مشكلة",
         "تشكيلة لحوم مشوية"
+      ],
+      "en": [
+        "Mix Grill",
+        "Assorted grilled meats"
       ],
       "fr": [
         "Grillades mixtes",
@@ -1914,13 +1925,13 @@ const ITEM_DATA = {
     },
     {
       "price": "845",
-      "en": [
-        "Surf & Turf",
-        "Grilled steak paired with shrimp"
-      ],
       "ar": [
         "سيرف اند تيرف",
         "ستيك مشوي مع جمبري"
+      ],
+      "en": [
+        "Surf & Turf",
+        "Grilled steak paired with shrimp"
       ],
       "fr": [
         "Surf & Turf",
@@ -1949,13 +1960,13 @@ const ITEM_DATA = {
     },
     {
       "price": "845",
-      "en": [
-        "T-Bone",
-        "Grilled T-bone steak"
-      ],
       "ar": [
         "تي بون",
         "ستيك تي بون مشوي"
+      ],
+      "en": [
+        "T-Bone",
+        "Grilled T-bone steak"
       ],
       "fr": [
         "T-Bone",
@@ -1984,13 +1995,13 @@ const ITEM_DATA = {
     },
     {
       "price": "845",
-      "en": [
-        "Ribeye",
-        "Grilled ribeye steak"
-      ],
       "ar": [
         "ريب آي",
         "ستيك ريب آي مشوي"
+      ],
+      "en": [
+        "Ribeye",
+        "Grilled ribeye steak"
       ],
       "fr": [
         "Entrecôte",
@@ -2019,13 +2030,13 @@ const ITEM_DATA = {
     },
     {
       "price": "995",
-      "en": [
-        "Tomahawk",
-        "Grilled bone-in tomahawk steak"
-      ],
       "ar": [
         "توماهوك",
         "ستيك توماهوك مشوي بالعظم"
+      ],
+      "en": [
+        "Tomahawk",
+        "Grilled bone-in tomahawk steak"
       ],
       "fr": [
         "Tomahawk",
@@ -2051,17 +2062,16 @@ const ITEM_DATA = {
         "Tomahawk",
         "Bistecca tomahawk con osso alla griglia"
       ]
-    }
-    ,
+    },
     {
       "price": "495",
-      "en": [
-        "Beef Fajita",
-        "Sizzling beef strips with peppers & onions"
-      ],
       "ar": [
         "فاهيتا لحم",
         "شرائح لحم مقلية بالفلفل والبصل"
+      ],
+      "en": [
+        "Beef Fajita",
+        "Sizzling beef strips with peppers & onions"
       ],
       "fr": [
         "Fajita de bœuf",
@@ -2092,13 +2102,13 @@ const ITEM_DATA = {
   "chicken": [
     {
       "price": "420",
-      "en": [
-        "Chicken Panna",
-        "Chicken in creamy panna sauce"
-      ],
       "ar": [
         "دجاج بانيه",
         "دجاج بصوص بانا الكريمي"
+      ],
+      "en": [
+        "Chicken Panna",
+        "Chicken in creamy panna sauce"
       ],
       "fr": [
         "Poulet Panna",
@@ -2127,13 +2137,13 @@ const ITEM_DATA = {
     },
     {
       "price": "420",
-      "en": [
-        "Chicken Mushroom",
-        "Chicken in creamy mushroom sauce"
-      ],
       "ar": [
         "دجاج بالمشروم",
         "دجاج بصوص المشروم الكريمي"
+      ],
+      "en": [
+        "Chicken Mushroom",
+        "Chicken in creamy mushroom sauce"
       ],
       "fr": [
         "Poulet aux champignons",
@@ -2162,13 +2172,13 @@ const ITEM_DATA = {
     },
     {
       "price": "440",
-      "en": [
-        "Chicken Fajita",
-        "Sizzling chicken with peppers & onions"
-      ],
       "ar": [
         "فاهيتا دجاج",
         "دجاج مع فلفل وبصل"
+      ],
+      "en": [
+        "Chicken Fajita",
+        "Sizzling chicken with peppers & onions"
       ],
       "fr": [
         "Fajita poulet",
@@ -2197,13 +2207,13 @@ const ITEM_DATA = {
     },
     {
       "price": "395",
-      "en": [
-        "Chicken Grill",
-        "Grilled marinated chicken breast"
-      ],
       "ar": [
         "دجاج مشوي",
         "صدر دجاج متبل مشوي"
+      ],
+      "en": [
+        "Chicken Grill",
+        "Grilled marinated chicken breast"
       ],
       "fr": [
         "Poulet grillé",
@@ -2232,13 +2242,13 @@ const ITEM_DATA = {
     },
     {
       "price": "395",
-      "en": [
-        "Chicken Strips",
-        "Grilled chicken strips"
-      ],
       "ar": [
         "أصابع دجاج مشوية",
         "شرائح دجاج مشوية"
+      ],
+      "en": [
+        "Chicken Strips",
+        "Grilled chicken strips"
       ],
       "fr": [
         "Lanières de poulet",
@@ -2267,13 +2277,13 @@ const ITEM_DATA = {
     },
     {
       "price": "495",
-      "en": [
-        "Chicken Cordon Blue",
-        "Breaded chicken, ham & cheese"
-      ],
       "ar": [
         "كوردون بلو دجاج",
         "دجاج بالجبنة واللانشون مقرمش"
+      ],
+      "en": [
+        "Chicken Cordon Blue",
+        "Breaded chicken, ham & cheese"
       ],
       "fr": [
         "Cordon bleu de poulet",
@@ -2302,13 +2312,13 @@ const ITEM_DATA = {
     },
     {
       "price": "495",
-      "en": [
-        "Chicken Lemon Butter",
-        "Chicken in lemon butter sauce"
-      ],
       "ar": [
         "دجاج بالليمون والزبدة",
         "دجاج بصوص الليمون والزبدة"
+      ],
+      "en": [
+        "Chicken Lemon Butter",
+        "Chicken in lemon butter sauce"
       ],
       "fr": [
         "Poulet beurre citron",
@@ -2337,13 +2347,13 @@ const ITEM_DATA = {
     },
     {
       "price": "420",
-      "en": [
-        "Shish Tawook",
-        "Marinated grilled chicken skewers"
-      ],
       "ar": [
         "شيش طاووق",
         "أسياخ دجاج متبلة مشوية"
+      ],
+      "en": [
+        "Shish Tawook",
+        "Marinated grilled chicken skewers"
       ],
       "fr": [
         "Chich taouk",
@@ -2372,13 +2382,13 @@ const ITEM_DATA = {
     },
     {
       "price": "440",
-      "en": [
-        "Chicken Sweet & Sour",
-        "Chicken in sweet and sour sauce"
-      ],
       "ar": [
         "دجاج بالصوص الحلو والحامض",
         "دجاج بصوص حلو وحامض"
+      ],
+      "en": [
+        "Chicken Sweet & Sour",
+        "Chicken in sweet and sour sauce"
       ],
       "fr": [
         "Poulet aigre-doux",
@@ -2409,13 +2419,13 @@ const ITEM_DATA = {
   "fish": [
     {
       "price": "440",
-      "en": [
-        "Mussels (White Wine)",
-        "Steamed mussels in white wine sauce"
-      ],
       "ar": [
         "بلح البحر بالنبيذ الأبيض",
         "بلح بحر مطهو بصوص النبيذ الأبيض"
+      ],
+      "en": [
+        "Mussels (White Wine)",
+        "Steamed mussels in white wine sauce"
       ],
       "fr": [
         "Moules au vin blanc",
@@ -2444,13 +2454,13 @@ const ITEM_DATA = {
     },
     {
       "price": "460",
-      "en": [
-        "Fish & Chips",
-        "Crispy battered fish, fries"
-      ],
       "ar": [
         "سمك وبطاطس",
         "سمك مقرمش مقلي مع بطاطس"
+      ],
+      "en": [
+        "Fish & Chips",
+        "Crispy battered fish, fries"
       ],
       "fr": [
         "Fish & Chips",
@@ -2479,13 +2489,13 @@ const ITEM_DATA = {
     },
     {
       "price": "750",
-      "en": [
-        "Steak Salmon",
-        "Grilled salmon steak"
-      ],
       "ar": [
         "ستيك سلمون",
         "ستيك سلمون مشوي"
+      ],
+      "en": [
+        "Steak Salmon",
+        "Grilled salmon steak"
       ],
       "fr": [
         "Steak de saumon",
@@ -2514,13 +2524,13 @@ const ITEM_DATA = {
     },
     {
       "price": "550",
-      "en": [
-        "Shrimp",
-        "Grilled or sautéed shrimp"
-      ],
       "ar": [
         "جمبري",
         "جمبري مشوي أو سوتيه"
+      ],
+      "en": [
+        "Shrimp",
+        "Grilled or sautéed shrimp"
       ],
       "fr": [
         "Crevettes",
@@ -2549,13 +2559,13 @@ const ITEM_DATA = {
     },
     {
       "price": "750",
-      "en": [
-        "Asian Steak Tuna",
-        "Seared tuna steak, Asian style"
-      ],
       "ar": [
         "ستيك تونة آسيوي",
         "ستيك تونة مشوي بالطريقة الآسيوية"
+      ],
+      "en": [
+        "Asian Steak Tuna",
+        "Seared tuna steak, Asian style"
       ],
       "fr": [
         "Steak de thon asiatique",
@@ -2584,13 +2594,13 @@ const ITEM_DATA = {
     },
     {
       "price": "890",
-      "en": [
-        "Mix Sea Food",
-        "Assorted grilled seafood platter"
-      ],
       "ar": [
         "مشاوي بحرية مشكلة",
         "طبق مأكولات بحرية مشكلة مشوية"
+      ],
+      "en": [
+        "Mix Sea Food",
+        "Assorted grilled seafood platter"
       ],
       "fr": [
         "Assortiment de fruits de mer",
@@ -2621,13 +2631,13 @@ const ITEM_DATA = {
   "pasta": [
     {
       "price": "220",
-      "en": [
-        "Penne Arrabbiata",
-        "Penne in spicy tomato sauce"
-      ],
       "ar": [
         "بيني أرابياتا",
         "بيني بصوص طماطم حار"
+      ],
+      "en": [
+        "Penne Arrabbiata",
+        "Penne in spicy tomato sauce"
       ],
       "fr": [
         "Penne Arrabbiata",
@@ -2656,13 +2666,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Carbonara",
-        "Creamy pasta, egg & cheese"
-      ],
       "ar": [
         "كاربونارا",
         "باستا كريمية بالبيض والجبنة"
+      ],
+      "en": [
+        "Carbonara",
+        "Creamy pasta, egg & cheese"
       ],
       "fr": [
         "Carbonara",
@@ -2691,13 +2701,13 @@ const ITEM_DATA = {
     },
     {
       "price": "340",
-      "en": [
-        "Shrimp Pasta",
-        "Pasta with sautéed shrimp"
-      ],
       "ar": [
         "باستا بالجمبري",
         "باستا مع جمبري سوتيه"
+      ],
+      "en": [
+        "Shrimp Pasta",
+        "Pasta with sautéed shrimp"
       ],
       "fr": [
         "Pâtes aux crevettes",
@@ -2726,13 +2736,13 @@ const ITEM_DATA = {
     },
     {
       "price": "250",
-      "en": [
-        "Bolognese",
-        "Pasta with rich meat ragù"
-      ],
       "ar": [
         "بولونيز",
         "باستا بصوص اللحم الغني"
+      ],
+      "en": [
+        "Bolognese",
+        "Pasta with rich meat ragù"
       ],
       "fr": [
         "Bolognaise",
@@ -2761,13 +2771,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Four Cheese",
-        "Pasta in creamy four-cheese sauce"
-      ],
       "ar": [
         "أربع أجبان",
         "باستا بصوص أربع أجبان كريمي"
+      ],
+      "en": [
+        "Four Cheese",
+        "Pasta in creamy four-cheese sauce"
       ],
       "fr": [
         "Quatre fromages",
@@ -2796,13 +2806,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Chicken Alfredo",
-        "Pasta, chicken in creamy Alfredo sauce"
-      ],
       "ar": [
         "ألفريدو بالدجاج",
         "باستا ودجاج بصوص ألفريدو الكريمي"
+      ],
+      "en": [
+        "Chicken Alfredo",
+        "Pasta, chicken in creamy Alfredo sauce"
       ],
       "fr": [
         "Poulet Alfredo",
@@ -2831,13 +2841,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Negresco",
-        "Pasta with creamy seafood sauce"
-      ],
       "ar": [
         "نيجريسكو",
         "باستا بصوص مأكولات بحرية كريمي"
+      ],
+      "en": [
+        "Negresco",
+        "Pasta with creamy seafood sauce"
       ],
       "fr": [
         "Negresco",
@@ -2866,13 +2876,13 @@ const ITEM_DATA = {
     },
     {
       "price": "350",
-      "en": [
-        "Smoked Salmon Pasta",
-        "Pasta with smoked salmon, cream sauce"
-      ],
       "ar": [
         "باستا سلمون مدخن",
         "باستا بالسلمون المدخن وصوص كريمي"
+      ],
+      "en": [
+        "Smoked Salmon Pasta",
+        "Pasta with smoked salmon, cream sauce"
       ],
       "fr": [
         "Pâtes saumon fumé",
@@ -2901,13 +2911,13 @@ const ITEM_DATA = {
     },
     {
       "price": "345",
-      "en": [
-        "Seafood Pasta",
-        "Pasta with mixed seafood"
-      ],
       "ar": [
         "باستا مأكولات بحرية",
         "باستا بمأكولات بحرية مشكلة"
+      ],
+      "en": [
+        "Seafood Pasta",
+        "Pasta with mixed seafood"
       ],
       "fr": [
         "Pâtes aux fruits de mer",
@@ -2938,13 +2948,13 @@ const ITEM_DATA = {
   "pizza": [
     {
       "price": "195",
-      "en": [
-        "Margherita",
-        "Tomato, mozzarella & basil"
-      ],
       "ar": [
         "مارجريتا",
         "طماطم وموزاريلا وريحان"
+      ],
+      "en": [
+        "Margherita",
+        "Tomato, mozzarella & basil"
       ],
       "fr": [
         "Margherita",
@@ -2973,13 +2983,13 @@ const ITEM_DATA = {
     },
     {
       "price": "320",
-      "en": [
-        "Sea Food Pizza",
-        "Mixed seafood topping"
-      ],
       "ar": [
         "بيتزا مأكولات بحرية",
         "بيتزا بمأكولات بحرية مشكلة"
+      ],
+      "en": [
+        "Sea Food Pizza",
+        "Mixed seafood topping"
       ],
       "fr": [
         "Pizza fruits de mer",
@@ -3008,13 +3018,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Mix Meat Pizza",
-        "Assorted meat toppings"
-      ],
       "ar": [
         "بيتزا لحوم مشكلة",
         "بيتزا بلحوم متنوعة"
+      ],
+      "en": [
+        "Mix Meat Pizza",
+        "Assorted meat toppings"
       ],
       "fr": [
         "Pizza viandes mixtes",
@@ -3043,13 +3053,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Ala Tuna",
-        "Tuna, onion & olives"
-      ],
       "ar": [
         "بيتزا تونة",
         "تونة وبصل وزيتون"
+      ],
+      "en": [
+        "Ala Tuna",
+        "Tuna, onion & olives"
       ],
       "fr": [
         "Ala Tuna",
@@ -3078,13 +3088,13 @@ const ITEM_DATA = {
     },
     {
       "price": "290",
-      "en": [
-        "Chicken Pizza",
-        "Grilled chicken topping"
-      ],
       "ar": [
         "بيتزا دجاج",
         "بيتزا بالدجاج المشوي"
+      ],
+      "en": [
+        "Chicken Pizza",
+        "Grilled chicken topping"
       ],
       "fr": [
         "Pizza poulet",
@@ -3113,13 +3123,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Quattro Formaggi",
-        "Four cheese blend"
-      ],
       "ar": [
         "كواترو فورماجي",
         "تشكيلة أربع أجبان"
+      ],
+      "en": [
+        "Quattro Formaggi",
+        "Four cheese blend"
       ],
       "fr": [
         "Quatre fromages",
@@ -3148,13 +3158,13 @@ const ITEM_DATA = {
     },
     {
       "price": "395",
-      "en": [
-        "Smoked Salmon & Shrimp",
-        "Smoked salmon, shrimp & cream"
-      ],
       "ar": [
         "سلمون مدخن وجمبري",
         "سلمون مدخن وجمبري بصوص كريمي"
+      ],
+      "en": [
+        "Smoked Salmon & Shrimp",
+        "Smoked salmon, shrimp & cream"
       ],
       "fr": [
         "Saumon fumé et crevettes",
@@ -3185,13 +3195,13 @@ const ITEM_DATA = {
   "desserts": [
     {
       "price": "160",
-      "en": [
-        "Ice Cream (3 Scoops)",
-        "Three scoops, choice of flavors"
-      ],
       "ar": [
         "آيس كريم (٣ كرات)",
         "ثلاث كرات آيس كريم بنكهات مختلفة"
+      ],
+      "en": [
+        "Ice Cream (3 Scoops)",
+        "Three scoops, choice of flavors"
       ],
       "fr": [
         "Glace (3 boules)",
@@ -3220,13 +3230,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Chocolate Cake",
-        "Rich moist chocolate cake"
-      ],
       "ar": [
         "كيكة شوكولاتة",
         "كيكة شوكولاتة طرية غنية"
+      ],
+      "en": [
+        "Chocolate Cake",
+        "Rich moist chocolate cake"
       ],
       "fr": [
         "Gâteau au chocolat",
@@ -3255,13 +3265,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Cheese Cake",
-        "Creamy baked cheesecake"
-      ],
       "ar": [
         "تشيز كيك",
         "تشيز كيك كريمي مخبوز"
+      ],
+      "en": [
+        "Cheese Cake",
+        "Creamy baked cheesecake"
       ],
       "fr": [
         "Cheesecake",
@@ -3290,13 +3300,13 @@ const ITEM_DATA = {
     },
     {
       "price": "175",
-      "en": [
-        "Molten Cake",
-        "Warm cake, melted chocolate center"
-      ],
       "ar": [
         "مولتن كيك",
         "كيكة دافئة بقلب شوكولاتة ذائبة"
+      ],
+      "en": [
+        "Molten Cake",
+        "Warm cake, melted chocolate center"
       ],
       "fr": [
         "Fondant au chocolat",
@@ -3325,13 +3335,13 @@ const ITEM_DATA = {
     },
     {
       "price": "170",
-      "en": [
-        "Tiramisu",
-        "Classic coffee-flavored Italian dessert"
-      ],
       "ar": [
         "تيراميسو",
         "حلوى إيطالية كلاسيكية بنكهة القهوة"
+      ],
+      "en": [
+        "Tiramisu",
+        "Classic coffee-flavored Italian dessert"
       ],
       "fr": [
         "Tiramisu",
@@ -3362,13 +3372,13 @@ const ITEM_DATA = {
   "hot_drinks": [
     {
       "price": "55",
-      "en": [
-        "Tea",
-        "Freshly brewed black tea"
-      ],
       "ar": [
         "شاي",
         "شاي أسود طازج"
+      ],
+      "en": [
+        "Tea",
+        "Freshly brewed black tea"
       ],
       "fr": [
         "Thé",
@@ -3397,13 +3407,13 @@ const ITEM_DATA = {
     },
     {
       "price": "65",
-      "en": [
-        "Turkish Coffee",
-        "Traditional finely ground coffee"
-      ],
       "ar": [
         "قهوة تركية",
         "قهوة تقليدية مطحونة ناعم"
+      ],
+      "en": [
+        "Turkish Coffee",
+        "Traditional finely ground coffee"
       ],
       "fr": [
         "Café turc",
@@ -3432,13 +3442,13 @@ const ITEM_DATA = {
     },
     {
       "price": "75",
-      "en": [
-        "French Coffee",
-        "Smooth filtered coffee"
-      ],
       "ar": [
         "قهوة فرنسية",
         "قهوة مفلترة ناعمة"
+      ],
+      "en": [
+        "French Coffee",
+        "Smooth filtered coffee"
       ],
       "fr": [
         "Café français",
@@ -3467,13 +3477,13 @@ const ITEM_DATA = {
     },
     {
       "price": "85",
-      "en": [
-        "Flavored Coffee",
-        "Coffee with your choice of flavor"
-      ],
       "ar": [
         "قهوة بنكهات",
         "قهوة بالنكهة التي تختارها"
+      ],
+      "en": [
+        "Flavored Coffee",
+        "Coffee with your choice of flavor"
       ],
       "fr": [
         "Café aromatisé",
@@ -3502,13 +3512,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "American Coffee",
-        "Classic black filter coffee"
-      ],
       "ar": [
         "قهوة أمريكية",
         "قهوة سوداء مفلترة كلاسيكية"
+      ],
+      "en": [
+        "American Coffee",
+        "Classic black filter coffee"
       ],
       "fr": [
         "Café américain",
@@ -3537,13 +3547,13 @@ const ITEM_DATA = {
     },
     {
       "price": "79 / 99",
-      "en": [
-        "Espresso (Single / Double)",
-        "Rich espresso shot"
-      ],
       "ar": [
         "إسبريسو (سينجل / دبل)",
         "جرعة إسبريسو غنية"
+      ],
+      "en": [
+        "Espresso (Single / Double)",
+        "Rich espresso shot"
       ],
       "fr": [
         "Espresso (simple / double)",
@@ -3572,13 +3582,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "Cappuccino",
-        "Espresso with steamed milk foam"
-      ],
       "ar": [
         "كابتشينو",
         "إسبريسو مع رغوة حليب مبخر"
+      ],
+      "en": [
+        "Cappuccino",
+        "Espresso with steamed milk foam"
       ],
       "fr": [
         "Cappuccino",
@@ -3607,13 +3617,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "Latte",
-        "Espresso with steamed milk"
-      ],
       "ar": [
         "لاتيه",
         "إسبريسو مع حليب مبخر"
+      ],
+      "en": [
+        "Latte",
+        "Espresso with steamed milk"
       ],
       "fr": [
         "Latte",
@@ -3642,13 +3652,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "Mocha",
-        "Espresso, chocolate & steamed milk"
-      ],
       "ar": [
         "موكا",
         "إسبريسو وشوكولاتة وحليب مبخر"
+      ],
+      "en": [
+        "Mocha",
+        "Espresso, chocolate & steamed milk"
       ],
       "fr": [
         "Moka",
@@ -3677,13 +3687,13 @@ const ITEM_DATA = {
     },
     {
       "price": "85",
-      "en": [
-        "Mikato",
-        "Local-style hot drink blend"
-      ],
       "ar": [
         "ميكاتو",
         "مشروب ساخن بطريقة محلية"
+      ],
+      "en": [
+        "Mikato",
+        "Local-style hot drink blend"
       ],
       "fr": [
         "Mikato",
@@ -3712,13 +3722,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "Hot Chocolate",
-        "Rich melted chocolate drink"
-      ],
       "ar": [
         "شوكولاتة ساخنة",
         "مشروب شوكولاتة ذائبة غني"
+      ],
+      "en": [
+        "Hot Chocolate",
+        "Rich melted chocolate drink"
       ],
       "fr": [
         "Chocolat chaud",
@@ -3747,13 +3757,13 @@ const ITEM_DATA = {
     },
     {
       "price": "80 / 90",
-      "en": [
-        "Nescafé / Milke",
-        "Instant coffee, plain or with milk"
-      ],
       "ar": [
         "نسكافيه / ميلك",
         "قهوة سريعة سادة أو بالحليب"
+      ],
+      "en": [
+        "Nescafé / Milke",
+        "Instant coffee, plain or with milk"
       ],
       "fr": [
         "Nescafé / lait",
@@ -3782,13 +3792,13 @@ const ITEM_DATA = {
     },
     {
       "price": "75",
-      "en": [
-        "Herbal Tea",
-        "Assorted soothing herbal infusion"
-      ],
       "ar": [
         "أعشاب",
         "مشروب أعشاب مهدئ متنوع"
+      ],
+      "en": [
+        "Herbal Tea",
+        "Assorted soothing herbal infusion"
       ],
       "fr": [
         "Tisane",
@@ -3819,13 +3829,13 @@ const ITEM_DATA = {
   "soft_drinks": [
     {
       "price": "125",
-      "en": [
-        "Red Bull",
-        "Energy drink"
-      ],
       "ar": [
         "ريد بُل",
         "مشروب طاقة"
+      ],
+      "en": [
+        "Red Bull",
+        "Energy drink"
       ],
       "fr": [
         "Red Bull",
@@ -3854,13 +3864,13 @@ const ITEM_DATA = {
     },
     {
       "price": "75",
-      "en": [
-        "Birell / Schweppes",
-        "Malt or mixer soft drink"
-      ],
       "ar": [
         "بيريل / شويبس",
         "مشروب شعير أو مشروب مزج غازي"
+      ],
+      "en": [
+        "Birell / Schweppes",
+        "Malt or mixer soft drink"
       ],
       "fr": [
         "Birell / Schweppes",
@@ -3889,13 +3899,13 @@ const ITEM_DATA = {
     },
     {
       "price": "75",
-      "en": [
-        "Soda / Tonic",
-        "Sparkling soda or tonic water"
-      ],
       "ar": [
         "صودا / تونيك",
         "صودا أو مياه تونيك فوارة"
+      ],
+      "en": [
+        "Soda / Tonic",
+        "Sparkling soda or tonic water"
       ],
       "fr": [
         "Soda / Tonic",
@@ -3924,13 +3934,13 @@ const ITEM_DATA = {
     },
     {
       "price": "65",
-      "en": [
-        "Cola",
-        "Cola, Cola Light, Sprite or Fanta"
-      ],
       "ar": [
         "كولا",
         "كولا، كولا لايت، سبرايت أو فانتا"
+      ],
+      "en": [
+        "Cola",
+        "Cola, Cola Light, Sprite or Fanta"
       ],
       "fr": [
         "Cola",
@@ -3959,13 +3969,13 @@ const ITEM_DATA = {
     },
     {
       "price": "20",
-      "en": [
-        "Water",
-        "Bottled still water"
-      ],
       "ar": [
         "مياه",
         "مياه معدنية غير فوارة"
+      ],
+      "en": [
+        "Water",
+        "Bottled still water"
       ],
       "fr": [
         "Eau",
@@ -3996,13 +4006,13 @@ const ITEM_DATA = {
   "iced_drinks": [
     {
       "price": "95",
-      "en": [
-        "Iced Coffee",
-        "Chilled coffee over ice"
-      ],
       "ar": [
         "قهوة مثلجة",
         "قهوة باردة مع ثلج"
+      ],
+      "en": [
+        "Iced Coffee",
+        "Chilled coffee over ice"
       ],
       "fr": [
         "Café glacé",
@@ -4031,13 +4041,13 @@ const ITEM_DATA = {
     },
     {
       "price": "95",
-      "en": [
-        "Iced Latte",
-        "Chilled espresso with milk over ice"
-      ],
       "ar": [
         "لاتيه مثلج",
         "إسبريسو وحليب بارد مع ثلج"
+      ],
+      "en": [
+        "Iced Latte",
+        "Chilled espresso with milk over ice"
       ],
       "fr": [
         "Latte glacé",
@@ -4066,13 +4076,13 @@ const ITEM_DATA = {
     },
     {
       "price": "99",
-      "en": [
-        "Iced Mocha",
-        "Chilled chocolate coffee over ice"
-      ],
       "ar": [
         "موكا مثلجة",
         "قهوة شوكولاتة باردة مع ثلج"
+      ],
+      "en": [
+        "Iced Mocha",
+        "Chilled chocolate coffee over ice"
       ],
       "fr": [
         "Moka glacé",
@@ -4101,13 +4111,13 @@ const ITEM_DATA = {
     },
     {
       "price": "70",
-      "en": [
-        "Iced Tea",
-        "Chilled sweetened tea over ice"
-      ],
       "ar": [
         "شاي مثلج",
         "شاي بارد محلى مع ثلج"
+      ],
+      "en": [
+        "Iced Tea",
+        "Chilled sweetened tea over ice"
       ],
       "fr": [
         "Thé glacé",
@@ -4138,13 +4148,13 @@ const ITEM_DATA = {
   "milkshake": [
     {
       "price": "175",
-      "en": [
-        "Choose Your Shake",
-        "Creamy milkshake, your choice of flavor"
-      ],
       "ar": [
         "اختر ميلك شيك",
         "ميلك شيك كريمي بالنكهة التي تختارها"
+      ],
+      "en": [
+        "Choose Your Shake",
+        "Creamy milkshake, your choice of flavor"
       ],
       "fr": [
         "Choisissez votre milk-shake",
@@ -4173,13 +4183,13 @@ const ITEM_DATA = {
     },
     {
       "price": "195",
-      "en": [
-        "Oreo / Snickers / KitKat",
-        "Premium candy-flavored milkshake"
-      ],
       "ar": [
         "أوريو / سنيكرز / كيت كات",
         "ميلك شيك فاخر بنكهة الحلوى"
+      ],
+      "en": [
+        "Oreo / Snickers / KitKat",
+        "Premium candy-flavored milkshake"
       ],
       "fr": [
         "Oreo / Snickers / KitKat",
@@ -4210,13 +4220,13 @@ const ITEM_DATA = {
   "fresh_juice": [
     {
       "price": "155",
-      "en": [
-        "Banana Milk",
-        "Fresh banana blended with milk"
-      ],
       "ar": [
         "موز بالحليب",
         "موز طازج مخفوق بالحليب"
+      ],
+      "en": [
+        "Banana Milk",
+        "Fresh banana blended with milk"
       ],
       "fr": [
         "Banane au lait",
@@ -4245,13 +4255,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Mango / Guava",
-        "Fresh mango or guava juice"
-      ],
       "ar": [
         "مانجو / جوافة",
         "عصير مانجو أو جوافة طازج"
+      ],
+      "en": [
+        "Mango / Guava",
+        "Fresh mango or guava juice"
       ],
       "fr": [
         "Mangue / Goyave",
@@ -4280,13 +4290,13 @@ const ITEM_DATA = {
     },
     {
       "price": "155",
-      "en": [
-        "Kiwi",
-        "Fresh kiwi juice"
-      ],
       "ar": [
         "كيوي",
         "عصير كيوي طازج"
+      ],
+      "en": [
+        "Kiwi",
+        "Fresh kiwi juice"
       ],
       "fr": [
         "Kiwi",
@@ -4315,13 +4325,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Strawberry",
-        "Fresh strawberry juice"
-      ],
       "ar": [
         "فراولة",
         "عصير فراولة طازج"
+      ],
+      "en": [
+        "Strawberry",
+        "Fresh strawberry juice"
       ],
       "fr": [
         "Fraise",
@@ -4350,13 +4360,13 @@ const ITEM_DATA = {
     },
     {
       "price": "140",
-      "en": [
-        "Lemon / Mint",
-        "Fresh lemon mint juice"
-      ],
       "ar": [
         "ليمون / نعناع",
         "عصير ليمون بالنعناع طازج"
+      ],
+      "en": [
+        "Lemon / Mint",
+        "Fresh lemon mint juice"
       ],
       "fr": [
         "Citron / Menthe",
@@ -4385,13 +4395,13 @@ const ITEM_DATA = {
     },
     {
       "price": "125",
-      "en": [
-        "Orange",
-        "Fresh squeezed orange juice"
-      ],
       "ar": [
         "برتقال",
         "عصير برتقال طازج معصور"
+      ],
+      "en": [
+        "Orange",
+        "Fresh squeezed orange juice"
       ],
       "fr": [
         "Orange",
@@ -4420,13 +4430,13 @@ const ITEM_DATA = {
     },
     {
       "price": "165",
-      "en": [
-        "Mix Mango Kiwi",
-        "Fresh mango and kiwi blend"
-      ],
       "ar": [
         "مكس مانجو كيوي",
         "خليط مانجو وكيوي طازج"
+      ],
+      "en": [
+        "Mix Mango Kiwi",
+        "Fresh mango and kiwi blend"
       ],
       "fr": [
         "Mix mangue kiwi",
@@ -4455,13 +4465,13 @@ const ITEM_DATA = {
     },
     {
       "price": "170",
-      "en": [
-        "Avocado",
-        "Fresh creamy avocado juice"
-      ],
       "ar": [
         "أفوكادو",
         "عصير أفوكادو كريمي طازج"
+      ],
+      "en": [
+        "Avocado",
+        "Fresh creamy avocado juice"
       ],
       "fr": [
         "Avocat",
@@ -4492,13 +4502,13 @@ const ITEM_DATA = {
   "fresh_cocktails": [
     {
       "price": "185",
-      "en": [
-        "Florida",
-        "Mango, strawberry & guava"
-      ],
       "ar": [
         "فلوريدا",
         "مانجو وفراولة وجوافة"
+      ],
+      "en": [
+        "Florida",
+        "Mango, strawberry & guava"
       ],
       "fr": [
         "Florida",
@@ -4527,13 +4537,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Strawberry Cooler",
-        "Strawberry, mango & sprite"
-      ],
       "ar": [
         "ستروبيري كولر",
         "فراولة ومانجو وسبرايت"
+      ],
+      "en": [
+        "Strawberry Cooler",
+        "Strawberry, mango & sprite"
       ],
       "fr": [
         "Strawberry Cooler",
@@ -4562,13 +4572,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Pina Banana",
-        "Pineapple, coconut & banana"
-      ],
       "ar": [
         "بينا بانانا",
         "أناناس وجوز هند وموز"
+      ],
+      "en": [
+        "Pina Banana",
+        "Pineapple, coconut & banana"
       ],
       "fr": [
         "Pina Banana",
@@ -4597,13 +4607,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Chiquita",
-        "Strawberry, banana, apple & orange"
-      ],
       "ar": [
         "تشيكيتا",
         "فراولة وموز وتفاح وبرتقال"
+      ],
+      "en": [
+        "Chiquita",
+        "Strawberry, banana, apple & orange"
       ],
       "fr": [
         "Chiquita",
@@ -4632,13 +4642,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Chiquita Mango",
-        "Mango, apple & orange"
-      ],
       "ar": [
         "تشيكيتا مانجو",
         "مانجو وتفاح وبرتقال"
+      ],
+      "en": [
+        "Chiquita Mango",
+        "Mango, apple & orange"
       ],
       "fr": [
         "Chiquita Mangue",
@@ -4667,13 +4677,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Jungle Ruble",
-        "Strawberry, orange, mango & lemon"
-      ],
       "ar": [
         "جانجل روبل",
         "فراولة وبرتقال ومانجو وليمون"
+      ],
+      "en": [
+        "Jungle Ruble",
+        "Strawberry, orange, mango & lemon"
       ],
       "fr": [
         "Jungle Ruble",
@@ -4702,13 +4712,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Virgin Mojito",
-        "Mint, lemon & sprite"
-      ],
       "ar": [
         "موهيتو خالي من الكحول",
         "نعناع وليمون وسبرايت"
+      ],
+      "en": [
+        "Virgin Mojito",
+        "Mint, lemon & sprite"
       ],
       "fr": [
         "Mojito sans alcool",
@@ -4737,13 +4747,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Cinderella",
-        "Pineapple, rose water & syrup"
-      ],
       "ar": [
         "سندريلا",
         "أناناس وماء ورد وشراب"
+      ],
+      "en": [
+        "Cinderella",
+        "Pineapple, rose water & syrup"
       ],
       "fr": [
         "Cendrillon",
@@ -4774,13 +4784,13 @@ const ITEM_DATA = {
   "mocktails": [
     {
       "price": "185",
-      "en": [
-        "Sun Shine",
-        "Tropical fruit mocktail"
-      ],
       "ar": [
         "صن شاين",
         "موكتيل فواكه استوائية"
+      ],
+      "en": [
+        "Sun Shine",
+        "Tropical fruit mocktail"
       ],
       "fr": [
         "Sun Shine",
@@ -4809,13 +4819,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "V. Pina Colada",
-        "Pineapple & coconut, non-alcoholic"
-      ],
       "ar": [
         "بينا كولادا خالي من الكحول",
         "أناناس وجوز هند بدون كحول"
+      ],
+      "en": [
+        "V. Pina Colada",
+        "Pineapple & coconut, non-alcoholic"
       ],
       "fr": [
         "Pina Colada sans alcool",
@@ -4844,13 +4854,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Blue Hawaiian",
-        "Pineapple & blue curaçao flavor mocktail"
-      ],
       "ar": [
         "بلو هاواين",
         "موكتيل أناناس بنكهة بلو كوراساو"
+      ],
+      "en": [
+        "Blue Hawaiian",
+        "Pineapple & blue curaçao flavor mocktail"
       ],
       "fr": [
         "Blue Hawaiian",
@@ -4879,13 +4889,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "V. Mai Tai",
-        "Tropical fruit blend, non-alcoholic"
-      ],
       "ar": [
         "ماي تاي خالي من الكحول",
         "خليط فواكه استوائية بدون كحول"
+      ],
+      "en": [
+        "V. Mai Tai",
+        "Tropical fruit blend, non-alcoholic"
       ],
       "fr": [
         "Mai Tai sans alcool",
@@ -4914,13 +4924,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Summer Cooler",
-        "Refreshing mixed fruit mocktail"
-      ],
       "ar": [
         "سمر كولر",
         "موكتيل فواكه منعش"
+      ],
+      "en": [
+        "Summer Cooler",
+        "Refreshing mixed fruit mocktail"
       ],
       "fr": [
         "Summer Cooler",
@@ -4949,13 +4959,13 @@ const ITEM_DATA = {
     },
     {
       "price": "185",
-      "en": [
-        "Strawberry Fizz",
-        "Strawberry with sparkling soda"
-      ],
       "ar": [
         "ستروبيري فيز",
         "فراولة مع صودا فوارة"
+      ],
+      "en": [
+        "Strawberry Fizz",
+        "Strawberry with sparkling soda"
       ],
       "fr": [
         "Strawberry Fizz",
@@ -4984,13 +4994,13 @@ const ITEM_DATA = {
     },
     {
       "price": "260",
-      "en": [
-        "Mojito Red Bull",
-        "Mint, lime & Red Bull, non-alcoholic"
-      ],
       "ar": [
         "موهيتو ريد بُل",
         "نعناع وليمون وريد بُل بدون كحول"
+      ],
+      "en": [
+        "Mojito Red Bull",
+        "Mint, lime & Red Bull, non-alcoholic"
       ],
       "fr": [
         "Mojito Red Bull",
@@ -5021,13 +5031,13 @@ const ITEM_DATA = {
   "cocktails": [
     {
       "price": "195",
-      "en": [
-        "Gin Fizz",
-        "Gin, lemon & soda"
-      ],
       "ar": [
         "جين فيز",
         "جين وليمون وصودا"
+      ],
+      "en": [
+        "Gin Fizz",
+        "Gin, lemon & soda"
       ],
       "fr": [
         "Gin Fizz",
@@ -5056,13 +5066,13 @@ const ITEM_DATA = {
     },
     {
       "price": "195",
-      "en": [
-        "Cuba Libre",
-        "Rum, cola & lime"
-      ],
       "ar": [
         "كوبا ليبرا",
         "رم وكولا وليمون"
+      ],
+      "en": [
+        "Cuba Libre",
+        "Rum, cola & lime"
       ],
       "fr": [
         "Cuba Libre",
@@ -5091,13 +5101,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Strawberry Daiquiri",
-        "Rum, strawberry & lime"
-      ],
       "ar": [
         "دايكيري فراولة",
         "رم وفراولة وليمون"
+      ],
+      "en": [
+        "Strawberry Daiquiri",
+        "Rum, strawberry & lime"
       ],
       "fr": [
         "Daïquiri fraise",
@@ -5126,13 +5136,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Woohoo",
-        "Vodka with fresh strawberry"
-      ],
       "ar": [
         " وو هو",
         "فودكا مع فراولة طازجة"
+      ],
+      "en": [
+        "Woohoo",
+        "Vodka with fresh strawberry"
       ],
       "fr": [
         "Vodka fraise",
@@ -5161,13 +5171,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Margarita",
-        "Tequila, triple sec & lime"
-      ],
       "ar": [
         "مارجريتا",
         "تيكيلا وتريبل سيك وليمون"
+      ],
+      "en": [
+        "Margarita",
+        "Tequila, triple sec & lime"
       ],
       "fr": [
         "Margarita",
@@ -5196,13 +5206,13 @@ const ITEM_DATA = {
     },
     {
       "price": "220",
-      "en": [
-        "Mojito",
-        "Rum, mint & lime — classic, mango or strawberry"
-      ],
       "ar": [
         "موهيتو",
         "رم ونعناع وليمون — كلاسيك أو مانجو أو فراولة"
+      ],
+      "en": [
+        "Mojito",
+        "Rum, mint & lime — classic, mango or strawberry"
       ],
       "fr": [
         "Mojito",
@@ -5231,13 +5241,13 @@ const ITEM_DATA = {
     },
     {
       "price": "225",
-      "en": [
-        "Sex on the Beach",
-        "Vodka, peach & orange juice"
-      ],
       "ar": [
         "سكس أون ذا بيتش",
         "فودكا وخوخ وعصير برتقال"
+      ],
+      "en": [
+        "Sex on the Beach",
+        "Vodka, peach & orange juice"
       ],
       "fr": [
         "Sex on the Beach",
@@ -5266,13 +5276,13 @@ const ITEM_DATA = {
     },
     {
       "price": "225",
-      "en": [
-        "Tequila Sunrise",
-        "Tequila, orange juice & grenadine"
-      ],
       "ar": [
         "تكيلا صن رايز",
         "تيكيلا وعصير برتقال وجرينادين"
+      ],
+      "en": [
+        "Tequila Sunrise",
+        "Tequila, orange juice & grenadine"
       ],
       "fr": [
         "Tequila Sunrise",
@@ -5301,13 +5311,13 @@ const ITEM_DATA = {
     },
     {
       "price": "235",
-      "en": [
-        "Pina Colada",
-        "Rum, pineapple & coconut cream"
-      ],
       "ar": [
         "بينا كولادا",
         "رم وأناناس وكريمة جوز الهند"
+      ],
+      "en": [
+        "Pina Colada",
+        "Rum, pineapple & coconut cream"
       ],
       "fr": [
         "Pina Colada",
@@ -5336,13 +5346,13 @@ const ITEM_DATA = {
     },
     {
       "price": "230",
-      "en": [
-        "La Bomba",
-        "House special mixed spirits cocktail"
-      ],
       "ar": [
         "لا بومبا",
         "كوكتيل خاص بالمنزل مخلوط بمشروبات متعددة"
+      ],
+      "en": [
+        "La Bomba",
+        "House special mixed spirits cocktail"
       ],
       "fr": [
         "La Bomba",
@@ -5371,13 +5381,13 @@ const ITEM_DATA = {
     },
     {
       "price": "230",
-      "en": [
-        "Irish Coffee",
-        "Coffee, Irish whiskey & cream"
-      ],
       "ar": [
         "قهوة إيرلندية",
         "قهوة وويسكي إيرلندي وكريمة"
+      ],
+      "en": [
+        "Irish Coffee",
+        "Coffee, Irish whiskey & cream"
       ],
       "fr": [
         "Café irlandais",
@@ -5406,13 +5416,13 @@ const ITEM_DATA = {
     },
     {
       "price": "250",
-      "en": [
-        "Long Island",
-        "Multi-spirit cocktail with cola"
-      ],
       "ar": [
         "لونج آيلاند",
         "كوكتيل بمشروبات متعددة مع كولا"
+      ],
+      "en": [
+        "Long Island",
+        "Multi-spirit cocktail with cola"
       ],
       "fr": [
         "Long Island",
@@ -5441,13 +5451,13 @@ const ITEM_DATA = {
     },
     {
       "price": "295",
-      "en": [
-        "Freedom Cocktail",
-        "House signature cocktail"
-      ],
       "ar": [
         "كوكتيل فريدوم",
         "كوكتيل مميز خاص بالمكان"
+      ],
+      "en": [
+        "Freedom Cocktail",
+        "House signature cocktail"
       ],
       "fr": [
         "Cocktail Freedom",
@@ -5478,13 +5488,13 @@ const ITEM_DATA = {
   "shoots": [
     {
       "price": "125 / 750",
-      "en": [
-        "Local Shots",
-        "Vodka, Gin, Tequila, Ouzo, Rum, Whisky or Brandy — single / bottle"
-      ],
       "ar": [
         "شوتس محلي",
         "فودكا، جين، تيكيلا، أوزو، رم، ويسكي أو براندي — شوت / زجاجة"
+      ],
+      "en": [
+        "Local Shots",
+        "Vodka, Gin, Tequila, Ouzo, Rum, Whisky or Brandy — single / bottle"
       ],
       "fr": [
         "Shots locaux",
@@ -5513,13 +5523,13 @@ const ITEM_DATA = {
     },
     {
       "price": "950",
-      "en": [
-        "Premium Shots",
-        "Premium Vodka, White Rum, Tequila or Whiskey"
-      ],
       "ar": [
         "شوتس فاخر",
         "فودكا، رم أبيض، تيكيلا أو ويسكي فاخر"
+      ],
+      "en": [
+        "Premium Shots",
+        "Premium Vodka, White Rum, Tequila or Whiskey"
       ],
       "fr": [
         "Shots premium",
@@ -5550,13 +5560,13 @@ const ITEM_DATA = {
   "wine": [
     {
       "price": "145 / 590",
-      "en": [
-        "Omar Khayam",
-        "Egyptian red or white — quarter / bottle"
-      ],
       "ar": [
         "عمر الخيام",
         "نبيذ مصري أحمر أو أبيض — ربع / زجاجة"
+      ],
+      "en": [
+        "Omar Khayam",
+        "Egyptian red or white — quarter / bottle"
       ],
       "fr": [
         "Omar Khayam",
@@ -5585,13 +5595,13 @@ const ITEM_DATA = {
     },
     {
       "price": "840",
-      "en": [
-        "Château de Granville",
-        "Bottle of red or white wine"
-      ],
       "ar": [
         "شاتو دو جرانفيل",
         "زجاجة نبيذ أحمر أو أبيض"
+      ],
+      "en": [
+        "Château de Granville",
+        "Bottle of red or white wine"
       ],
       "fr": [
         "Château de Granville",
@@ -5620,13 +5630,13 @@ const ITEM_DATA = {
     },
     {
       "price": "640",
-      "en": [
-        "365",
-        "Egyptian house wine, smooth & easy-drinking"
-      ],
       "ar": [
         "365",
         "نبيذ مصري محلي، طعمه ناعم وسهل"
+      ],
+      "en": [
+        "365",
+        "Egyptian house wine, smooth & easy-drinking"
       ],
       "fr": [
         "365",
@@ -5655,13 +5665,13 @@ const ITEM_DATA = {
     },
     {
       "price": "920",
-      "en": [
-        "Cape Bay",
-        "Bottle of red or white wine"
-      ],
       "ar": [
         "كيب باي",
         "زجاجة نبيذ أحمر أو أبيض"
+      ],
+      "en": [
+        "Cape Bay",
+        "Bottle of red or white wine"
       ],
       "fr": [
         "Cape Bay",
@@ -5690,13 +5700,13 @@ const ITEM_DATA = {
     },
     {
       "price": "690",
-      "en": [
-        "Grand Marquis",
-        "Bottle of premium red or white wine"
-      ],
       "ar": [
         "جراند ماركيز",
         "زجاجة نبيذ فاخر أحمر أو أبيض"
+      ],
+      "en": [
+        "Grand Marquis",
+        "Bottle of premium red or white wine"
       ],
       "fr": [
         "Grand Marquis",
@@ -5725,13 +5735,13 @@ const ITEM_DATA = {
     },
     {
       "price": "980",
-      "en": [
-        "Aida Valmont Sparkling",
-        "Bottle of sparkling wine"
-      ],
       "ar": [
         "إيدا فالمونت سبيركلينج",
         "زجاجة نبيذ فوار"
+      ],
+      "en": [
+        "Aida Valmont Sparkling",
+        "Bottle of sparkling wine"
       ],
       "fr": [
         "Aida Valmont pétillant",
@@ -5762,13 +5772,13 @@ const ITEM_DATA = {
   "beer": [
     {
       "price": "99",
-      "en": [
-        "Stella Bottle",
-        "Egyptian lager, bottle"
-      ],
       "ar": [
         "ستيلا زجاجة",
         "بيرة مصرية، زجاجة"
+      ],
+      "en": [
+        "Stella Bottle",
+        "Egyptian lager, bottle"
       ],
       "fr": [
         "Stella bouteille",
@@ -5797,13 +5807,13 @@ const ITEM_DATA = {
     },
     {
       "price": "109",
-      "en": [
-        "Stella Can",
-        "Egyptian lager, can"
-      ],
       "ar": [
         "ستيلا علبة",
         "بيرة مصرية، علبة"
+      ],
+      "en": [
+        "Stella Can",
+        "Egyptian lager, can"
       ],
       "fr": [
         "Stella canette",
@@ -5832,13 +5842,13 @@ const ITEM_DATA = {
     },
     {
       "price": "129",
-      "en": [
-        "Stella Ice",
-        "Crisp Egyptian ice-brewed lager"
-      ],
       "ar": [
         "ستيلا آيس",
         "بيرة مصرية مخمرة بالثلج منعشة"
+      ],
+      "en": [
+        "Stella Ice",
+        "Crisp Egyptian ice-brewed lager"
       ],
       "fr": [
         "Stella Ice",
@@ -5867,13 +5877,13 @@ const ITEM_DATA = {
     },
     {
       "price": "125",
-      "en": [
-        "Meister Max 8%",
-        "Strong malt beer, bottle"
-      ],
       "ar": [
         "مايستر ماكس ٨٪",
         "بيرة شعير قوية، زجاجة"
+      ],
+      "en": [
+        "Meister Max 8%",
+        "Strong malt beer, bottle"
       ],
       "fr": [
         "Meister Max 8%",
@@ -5902,13 +5912,13 @@ const ITEM_DATA = {
     },
     {
       "price": "135",
-      "en": [
-        "Meister Max 8% Can",
-        "Strong malt beer, can"
-      ],
       "ar": [
         "مايستر ماكس ٨٪ علبة",
         "بيرة شعير قوية، علبة"
+      ],
+      "en": [
+        "Meister Max 8% Can",
+        "Strong malt beer, can"
       ],
       "fr": [
         "Meister Max 8% canette",
@@ -5937,13 +5947,13 @@ const ITEM_DATA = {
     },
     {
       "price": "130",
-      "en": [
-        "Sakara Gold",
-        "Smooth Egyptian gold lager"
-      ],
       "ar": [
         "ساقارة جولد",
         "بيرة مصرية ذهبية ناعمة"
+      ],
+      "en": [
+        "Sakara Gold",
+        "Smooth Egyptian gold lager"
       ],
       "fr": [
         "Sakara Gold",
@@ -5972,13 +5982,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Sakara King 10%",
-        "Strong Egyptian beer"
-      ],
       "ar": [
         "ساقارة كينج ١٠٪",
         "بيرة مصرية قوية"
+      ],
+      "en": [
+        "Sakara King 10%",
+        "Strong Egyptian beer"
       ],
       "fr": [
         "Sakara King 10%",
@@ -6007,13 +6017,13 @@ const ITEM_DATA = {
     },
     {
       "price": "155",
-      "en": [
-        "Sakara 15%",
-        "Extra strong Egyptian beer"
-      ],
       "ar": [
         "ساقارة ١٥٪",
         "بيرة مصرية قوية جداً"
+      ],
+      "en": [
+        "Sakara 15%",
+        "Extra strong Egyptian beer"
       ],
       "fr": [
         "Sakara 15%",
@@ -6042,13 +6052,13 @@ const ITEM_DATA = {
     },
     {
       "price": "109",
-      "en": [
-        "Heineken Bottle",
-        "Premium lager, bottle"
-      ],
       "ar": [
         "هاينكن زجاجة",
         "بيرة فاخرة، زجاجة"
+      ],
+      "en": [
+        "Heineken Bottle",
+        "Premium lager, bottle"
       ],
       "fr": [
         "Heineken bouteille",
@@ -6077,13 +6087,13 @@ const ITEM_DATA = {
     },
     {
       "price": "114",
-      "en": [
-        "Heineken Can",
-        "Premium lager, can"
-      ],
       "ar": [
         "هاينكن علبة",
         "بيرة فاخرة، علبة"
+      ],
+      "en": [
+        "Heineken Can",
+        "Premium lager, can"
       ],
       "fr": [
         "Heineken canette",
@@ -6112,13 +6122,13 @@ const ITEM_DATA = {
     },
     {
       "price": "130",
-      "en": [
-        "ID 10%",
-        "Strong beer"
-      ],
       "ar": [
         "آي دي ١٠٪",
         "بيرة قوية"
+      ],
+      "en": [
+        "ID 10%",
+        "Strong beer"
       ],
       "fr": [
         "ID 10%",
@@ -6147,13 +6157,13 @@ const ITEM_DATA = {
     },
     {
       "price": "155",
-      "en": [
-        "ID 20%",
-        "Extra strong beer"
-      ],
       "ar": [
         "آي دي ٢٠٪",
         "بيرة قوية جداً"
+      ],
+      "en": [
+        "ID 20%",
+        "Extra strong beer"
       ],
       "fr": [
         "ID 20%",
@@ -6182,13 +6192,13 @@ const ITEM_DATA = {
     },
     {
       "price": "145",
-      "en": [
-        "Desperados",
-        "Tequila-flavored beer"
-      ],
       "ar": [
         "ديسبيرادوس",
         "بيرة بنكهة التيكيلا"
+      ],
+      "en": [
+        "Desperados",
+        "Tequila-flavored beer"
       ],
       "fr": [
         "Desperados",
@@ -6219,13 +6229,13 @@ const ITEM_DATA = {
   "shisha": [
     {
       "price": "60",
-      "en": [
-        "Egyptian Shisha",
-        "Traditional Egyptian tobacco blend"
-      ],
       "ar": [
         "شيشة مصرية",
         "خليط تبغ مصري تقليدي"
+      ],
+      "en": [
+        "Egyptian Shisha",
+        "Traditional Egyptian tobacco blend"
       ],
       "fr": [
         "Chicha égyptienne",
@@ -6254,13 +6264,13 @@ const ITEM_DATA = {
     },
     {
       "price": "265",
-      "en": [
-        "Fruit Shisha Deluxe",
-        "Premium fruit-flavored blend"
-      ],
       "ar": [
         "شيشة فواكه ديلوكس",
         "خليط فاخر بنكهة الفواكه"
+      ],
+      "en": [
+        "Fruit Shisha Deluxe",
+        "Premium fruit-flavored blend"
       ],
       "fr": [
         "Chicha fruits deluxe",
@@ -6289,13 +6299,13 @@ const ITEM_DATA = {
     },
     {
       "price": "320",
-      "en": [
-        "Mix Fruit Shisha Deluxe",
-        "Premium mixed fruit blend, choose your flavor"
-      ],
       "ar": [
         "شيشة مكس فواكه ديلوكس",
         "خليط فواكه مشكلة فاخر — اختر نكهتك"
+      ],
+      "en": [
+        "Mix Fruit Shisha Deluxe",
+        "Premium mixed fruit blend, choose your flavor"
       ],
       "fr": [
         "Chicha mix fruits deluxe",
@@ -6326,13 +6336,13 @@ const ITEM_DATA = {
   "nuts_mazza": [
     {
       "price": "70",
-      "en": [
-        "Nuts",
-        "Assorted roasted nuts"
-      ],
       "ar": [
         "مكسرات",
         "تشكيلة مكسرات محمصة"
+      ],
+      "en": [
+        "Nuts",
+        "Assorted roasted nuts"
       ],
       "fr": [
         "Noix",
@@ -6361,13 +6371,13 @@ const ITEM_DATA = {
     },
     {
       "price": "165",
-      "en": [
-        "Special Nuts",
-        "Premium mixed nuts selection"
-      ],
       "ar": [
         "مكسرات سبيشال",
         "تشكيلة مكسرات فاخرة مختارة"
+      ],
+      "en": [
+        "Special Nuts",
+        "Premium mixed nuts selection"
       ],
       "fr": [
         "Noix spéciales",
@@ -6396,13 +6406,13 @@ const ITEM_DATA = {
     },
     {
       "price": "225",
-      "en": [
-        "Mixed Cheese",
-        "Assorted cheese platter"
-      ],
       "ar": [
         "مكس جبن",
         "طبق جبن متنوع"
+      ],
+      "en": [
+        "Mixed Cheese",
+        "Assorted cheese platter"
       ],
       "fr": [
         "Assortiment de fromages",
@@ -6431,13 +6441,13 @@ const ITEM_DATA = {
     },
     {
       "price": "410",
-      "en": [
-        "Special Hot Mazza",
-        "Assorted warm appetizer platter"
-      ],
       "ar": [
         "مزة ساخنة سبيشال",
         "طبق مقبلات ساخنة متنوعة"
+      ],
+      "en": [
+        "Special Hot Mazza",
+        "Assorted warm appetizer platter"
       ],
       "fr": [
         "Mezzé chaud spécial",
@@ -6468,13 +6478,13 @@ const ITEM_DATA = {
   "billiards": [
     {
       "price": "100",
-      "en": [
-        "Billiards — Half Hour",
-        "Table rental, 30 minutes"
-      ],
       "ar": [
         "بلياردو — نصف ساعة",
         "تأجير طاولة، ٣٠ دقيقة"
+      ],
+      "en": [
+        "Billiards — Half Hour",
+        "Table rental, 30 minutes"
       ],
       "fr": [
         "Billard — Demi-heure",
@@ -6503,13 +6513,13 @@ const ITEM_DATA = {
     },
     {
       "price": "200",
-      "en": [
-        "Billiards — One Hour",
-        "Table rental, 60 minutes"
-      ],
       "ar": [
         "بلياردو — ساعة كاملة",
         "تأجير طاولة، ٦٠ دقيقة"
+      ],
+      "en": [
+        "Billiards — One Hour",
+        "Table rental, 60 minutes"
       ],
       "fr": [
         "Billard — Une heure",
@@ -6543,7 +6553,7 @@ const ITEM_DATA = {
    for branch nodes, or { id, name, hint, items:[] } for leaf nodes. */
 function buildCategory(node, lang) {
   const names = CATEGORY_NAMES[node.key] || {};
-  const name = names[lang] || names.en || node.key;
+  const name = names[lang] || names.ar || node.key;
   const hints = CATEGORY_HINTS[node.key] || {};
   const hint = hints[lang] || '';
   if (node.children) {
@@ -6551,7 +6561,7 @@ function buildCategory(node, lang) {
   }
   const rows = ITEM_DATA[node.key] || [];
   const items = rows.map(row => {
-    const pair = row[lang] || row.en;
+    const pair = row[lang] || row.ar;
     return { name: pair[0], desc: pair[1], price: row.price };
   });
   return { id: node.key, name, hint, items };
@@ -6570,8 +6580,8 @@ function saveLang(lang) {
 }
 
 function t(key, lang) {
-  const L = dict[lang] || dict.en;
-  return (key in L) ? L[key] : (dict.en[key] || key);
+  const L = dict[lang] || dict.ar;
+  return (key in L) ? L[key] : (dict.ar[key] || key);
 }
 
 /* Applies dir/lang attributes + the 'lang-ar' body class used across

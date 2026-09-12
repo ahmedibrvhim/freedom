@@ -10,10 +10,14 @@
   (function () {
     var t = localStorage.getItem('freedom_theme') === 'light' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
+    // Arabic is the site's reference/default language, so set lang/dir
+    // before first paint to avoid a flash of LTR layout on load.
+    document.documentElement.setAttribute('lang', 'ar');
+    document.documentElement.setAttribute('dir', 'rtl');
   })();
 </script>
 </head>
-<body>
+<body class="lang-ar">
 
 <button class="theme-toggle theme-toggle-standalone" id="themeToggle" type="button" aria-label="Switch between dark and light theme">
   <span class="theme-toggle-icon icon-sun">
@@ -36,12 +40,12 @@
     <path d="M36 26c8 1 14 7 15 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
   </svg>
 
-  <div class="intro-eyebrow" id="introEyebrow">Welcome</div>
+  <div class="intro-eyebrow" id="introEyebrow">أهلاً بك</div>
   <div class="intro-title">Freedom</div>
-  <div class="intro-tagline" id="introTagline">Lounge, Bar &amp; Restaurant</div>
+  <div class="intro-tagline" id="introTagline">لاونج وبار ومطعم</div>
 
-  <div class="intro-prompt" id="introPrompt">Choose your language</div>
-  <div class="intro-sub" id="introSub">Select a language to view the menu.</div>
+  <div class="intro-prompt" id="introPrompt">اختر لغتك</div>
+  <div class="intro-sub" id="introSub">اختر لغة لعرض قائمة الطعام.</div>
 
   <div class="lang-grid" id="langGrid"></div>
 
@@ -67,7 +71,8 @@ langGrid.innerHTML = LANG_LIST.map(l => `
 `).join('');
 
 /* Selecting a language only affects the menu page — the intro page
-   itself always stays in its default display language. */
+   itself always stays in Arabic, the site's reference/default
+   language. */
 langGrid.querySelectorAll('.lang-btn').forEach(btn => {
   const code = btn.dataset.code;
   btn.addEventListener('click', () => {

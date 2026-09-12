@@ -209,6 +209,12 @@ window.addEventListener('pageshow', (e) => {
     pageLoader.classList.remove('loader-visible', 'loader-error');
     loaderMsg.hidden = true;
     loaderRetry.hidden = true;
+    // The theme may have been changed on menu.html while we were away —
+    // a bfcache restore doesn't re-run our head script, so re-sync it
+    // from storage instead of showing whatever this page was frozen with.
+    const theme = CafeI18n.getTheme();
+    CafeI18n.applyTheme(theme);
+    reflectThemeColor(theme);
   }
 });
 

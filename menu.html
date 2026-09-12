@@ -333,6 +333,23 @@ themeToggle.addEventListener('click', () => {
   CafeI18n.applyTheme(next);
   reflectThemeColor(next);
 });
+
+/* Same bfcache issue as index.html: coming back here via the browser's
+   back/forward buttons restores the exact page as it was frozen, not a
+   fresh load — so it won't reflect a theme (or language) change made on
+   index.html in the meantime unless we re-sync from storage here. */
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) {
+    const theme = CafeI18n.getTheme();
+    CafeI18n.applyTheme(theme);
+    reflectThemeColor(theme);
+
+    const storedLang = CafeI18n.getLang() || 'ar';
+    if (storedLang !== lang) {
+      setLang(storedLang);
+    }
+  }
+});
 </script>
 </body>
 </html>

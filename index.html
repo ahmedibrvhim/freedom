@@ -10,14 +10,69 @@
   (function () {
     var t = localStorage.getItem('freedom_theme') === 'light' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
-    // Arabic is the site's reference/default language, so set lang/dir
-    // before first paint to avoid a flash of LTR layout on load.
-    document.documentElement.setAttribute('lang', 'ar');
-    document.documentElement.setAttribute('dir', 'rtl');
   })();
 </script>
+<style>
+  /* Shown for the moment between tapping a language and the menu page
+     taking over, so that tap feels responsive instead of dead —
+     especially noticeable on a slow connection. */
+  #pageLoader {
+    position:fixed; inset:0; z-index:9999;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px;
+    background:#0a0a0a;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .3s ease, visibility .3s ease;
+  }
+  :root[data-theme="light"] #pageLoader { background:#faf6ef; }
+  #pageLoader.loader-visible { opacity:1; visibility:visible; pointer-events:all; }
+  #pageLoader .loader-icon {
+    width:46px; height:46px; color:#c9a04b;
+    animation:loaderPulse 1.6s ease-in-out infinite;
+  }
+  :root[data-theme="light"] #pageLoader .loader-icon { color:#a97a2e; }
+  #pageLoader .loader-bar {
+    width:120px; height:3px; border-radius:3px; overflow:hidden;
+    background:rgba(201,160,75,.18);
+  }
+  #pageLoader .loader-bar::after {
+    content:''; display:block; width:40%; height:100%; border-radius:3px;
+    background:#c9a04b;
+    animation:loaderSlide 1.1s ease-in-out infinite;
+  }
+  :root[data-theme="light"] #pageLoader .loader-bar { background:rgba(169,122,46,.18); }
+  :root[data-theme="light"] #pageLoader .loader-bar::after { background:#a97a2e; }
+  @keyframes loaderPulse { 0%,100%{ opacity:.55; transform:scale(.94); } 50%{ opacity:1; transform:scale(1); } }
+  @keyframes loaderSlide { 0%{ transform:translateX(-110%); } 100%{ transform:translateX(360%); } }
+  #pageLoader .loader-msg {
+    font-family:'Inter', sans-serif; font-size:14px; color:#cdb99c; text-align:center;
+    max-width:260px; line-height:1.5;
+  }
+  #pageLoader .loader-retry {
+    font-family:'Inter', sans-serif; font-size:14px; font-weight:600;
+    color:#0a0a0a; background:#c9a04b; border:none; border-radius:8px;
+    padding:10px 22px; cursor:pointer;
+  }
+  :root[data-theme="light"] #pageLoader .loader-retry { color:#faf6ef; background:#a97a2e; }
+  #pageLoader.loader-error .loader-icon,
+  #pageLoader.loader-error .loader-bar { display:none; }
+</style>
 </head>
-<body class="lang-ar">
+<body>
+
+<div id="pageLoader" aria-hidden="true">
+  <svg class="loader-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M29 58c-1.5-12 0.5-23 7-32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-8-3-17-2-23 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-9 1-16 6-19 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c1-9 7-15 16-17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c7-3 15-2 20 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-1-9-6-15-14-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c8 1 14 7 15 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+  <div class="loader-bar"></div>
+  <div class="loader-msg" id="loaderMsg" hidden>Connection seems slow. Please check your internet and try again.</div>
+  <button class="loader-retry" id="loaderRetry" type="button" hidden>Try again</button>
+</div>
 
 <button class="theme-toggle theme-toggle-standalone" id="themeToggle" type="button" aria-label="Switch between dark and light theme">
   <span class="theme-toggle-icon icon-sun">
@@ -40,12 +95,12 @@
     <path d="M36 26c8 1 14 7 15 16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
   </svg>
 
-  <div class="intro-eyebrow" id="introEyebrow">أهلاً بك</div>
+  <div class="intro-eyebrow" id="introEyebrow">Welcome</div>
   <div class="intro-title">Freedom</div>
-  <div class="intro-tagline" id="introTagline">لاونج وبار ومطعم</div>
+  <div class="intro-tagline" id="introTagline">Lounge, Bar &amp; Restaurant</div>
 
-  <div class="intro-prompt" id="introPrompt">اختر لغتك</div>
-  <div class="intro-sub" id="introSub">اختر لغة لعرض قائمة الطعام.</div>
+  <div class="intro-prompt" id="introPrompt">Choose your language</div>
+  <div class="intro-sub" id="introSub">Select a language to view the menu.</div>
 
   <div class="lang-grid" id="langGrid"></div>
 
@@ -71,14 +126,71 @@ langGrid.innerHTML = LANG_LIST.map(l => `
 `).join('');
 
 /* Selecting a language only affects the menu page — the intro page
-   itself always stays in Arabic, the site's reference/default
-   language. */
+   itself always stays in English, regardless of which language is
+   chosen for the menu (or Arabic being the menu's reference language
+   internally). */
+const pageLoader  = document.getElementById('pageLoader');
+const loaderMsg   = document.getElementById('loaderMsg');
+const loaderRetry = document.getElementById('loaderRetry');
+let pendingCode = null;
+
+function showLoading() {
+  pageLoader.classList.remove('loader-error');
+  loaderMsg.hidden = true;
+  loaderRetry.hidden = true;
+  pageLoader.classList.add('loader-visible');
+}
+
+function showLoadError() {
+  pageLoader.classList.add('loader-error');
+  loaderMsg.hidden = false;
+  loaderRetry.hidden = false;
+}
+
+/* Confirms the menu page and its (large) menu-data file are actually
+   reachable before navigating, instead of blindly changing pages —
+   on a bad connection that blind navigation can hang or fail and
+   strand the guest on a broken/blank page with no way back. Opened
+   straight from disk (file://) skips the check, since fetch() can't
+   read local files there and there's no "slow internet" to guard
+   against in that case anyway. */
+function goToMenu(code) {
+  pendingCode = code;
+  showLoading();
+
+  if (location.protocol === 'file:') {
+    window.location.href = 'menu.html';
+    return;
+  }
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 12000);
+
+  Promise.all([
+    fetch('menu.html', { signal: controller.signal }),
+    fetch('i18n.js', { signal: controller.signal }),
+  ])
+    .then(([menuRes, dataRes]) => {
+      window.clearTimeout(timeout);
+      if (!menuRes.ok || !dataRes.ok) throw new Error('bad response');
+      window.location.href = 'menu.html';
+    })
+    .catch(() => {
+      window.clearTimeout(timeout);
+      showLoadError();
+    });
+}
+
 langGrid.querySelectorAll('.lang-btn').forEach(btn => {
   const code = btn.dataset.code;
   btn.addEventListener('click', () => {
     CafeI18n.saveLang(code);
-    window.location.href = 'menu.html';
+    goToMenu(code);
   });
+});
+
+loaderRetry.addEventListener('click', () => {
+  if (pendingCode) goToMenu(pendingCode);
 });
 
 /* Little multilingual footer line cycling through "select a language" translations. */

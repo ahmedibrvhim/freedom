@@ -133,6 +133,7 @@ const pageLoader  = document.getElementById('pageLoader');
 const loaderMsg   = document.getElementById('loaderMsg');
 const loaderRetry = document.getElementById('loaderRetry');
 let pendingCode = null;
+let requestToken = 0;
 
 function showLoading() {
   pageLoader.classList.remove('loader-error');
@@ -157,6 +158,7 @@ function showLoadError() {
 function goToMenu(code) {
   pendingCode = code;
   showLoading();
+  const myToken = ++requestToken;
 
   if (location.protocol === 'file:') {
     window.location.href = 'menu.html';
@@ -172,11 +174,13 @@ function goToMenu(code) {
   ])
     .then(([menuRes, dataRes]) => {
       window.clearTimeout(timeout);
+      if (myToken !== requestToken) return; // superseded (e.g. came back via bfcache)
       if (!menuRes.ok || !dataRes.ok) throw new Error('bad response');
       window.location.href = 'menu.html';
     })
     .catch(() => {
       window.clearTimeout(timeout);
+      if (myToken !== requestToken) return;
       showLoadError();
     });
 }
@@ -191,6 +195,21 @@ langGrid.querySelectorAll('.lang-btn').forEach(btn => {
 
 loaderRetry.addEventListener('click', () => {
   if (pendingCode) goToMenu(pendingCode);
+});
+
+/* Guards against the browser's back/forward cache: hitting "back" from
+   menu.html doesn't reload this page, it restores the exact DOM state
+   it was frozen in — which, if a language was just tapped, is mid
+   loading-screen. Without this, the guest would land back here stuck
+   behind the loader until a second back-tap forced a real reload. */
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) {
+    pendingCode = null;
+    requestToken++; // invalidate any in-flight preload check from before we left
+    pageLoader.classList.remove('loader-visible', 'loader-error');
+    loaderMsg.hidden = true;
+    loaderRetry.hidden = true;
+  }
 });
 
 /* Little multilingual footer line cycling through "select a language" translations. */

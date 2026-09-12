@@ -17,8 +17,60 @@
     document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
   })();
 </script>
+<!-- Critical, inline (no extra network request) so this paints instantly
+     even before style.css / i18n.js finish downloading on a slow
+     connection — that's the "frozen blank screen" this replaces. -->
+<style>
+  #pageLoader {
+    position:fixed; inset:0; z-index:9999;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px;
+    background:#0a0a0a;
+    transition:opacity .45s ease, visibility .45s ease;
+  }
+  :root[data-theme="light"] #pageLoader { background:#faf6ef; }
+  #pageLoader.loader-hidden { opacity:0; visibility:hidden; pointer-events:none; }
+  #pageLoader .loader-icon {
+    width:46px; height:46px; color:#c9a04b;
+    animation:loaderPulse 1.6s ease-in-out infinite;
+  }
+  :root[data-theme="light"] #pageLoader .loader-icon { color:#a97a2e; }
+  #pageLoader .loader-bar {
+    width:120px; height:3px; border-radius:3px; overflow:hidden;
+    background:rgba(201,160,75,.18);
+  }
+  #pageLoader .loader-bar::after {
+    content:''; display:block; width:40%; height:100%; border-radius:3px;
+    background:#c9a04b;
+    animation:loaderSlide 1.1s ease-in-out infinite;
+  }
+  :root[data-theme="light"] #pageLoader .loader-bar { background:rgba(169,122,46,.18); }
+  :root[data-theme="light"] #pageLoader .loader-bar::after { background:#a97a2e; }
+  @keyframes loaderPulse { 0%,100%{ opacity:.55; transform:scale(.94); } 50%{ opacity:1; transform:scale(1); } }
+  @keyframes loaderSlide { 0%{ transform:translateX(-110%); } 100%{ transform:translateX(360%); } }
+</style>
 </head>
 <body>
+
+<div id="pageLoader" aria-hidden="true">
+  <svg class="loader-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M29 58c-1.5-12 0.5-23 7-32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-8-3-17-2-23 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-9 1-16 6-19 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c1-9 7-15 16-17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c7-3 15-2 20 3" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c-1-9-6-15-14-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M36 26c8 1 14 7 15 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+  <div class="loader-bar"></div>
+</div>
+<script>
+  // Safety net: if i18n.js fails to load or hangs on a very slow
+  // connection, never leave the guest staring at the loader forever.
+  window.setTimeout(() => {
+    const l = document.getElementById('pageLoader');
+    if (l) l.classList.add('loader-hidden');
+  }, 12000);
+</script>
 
 <nav class="site-nav">
   <a class="brand-mark" href="index.html">
@@ -249,6 +301,21 @@ document.addEventListener('click', (e) => {
 });
 
 setLang(lang);
+
+/* Content is rendered synchronously above, so the loader can come down
+   now — a tiny extra delay + fade keeps the swap feeling smooth rather
+   than an abrupt cut, and covers the case where fonts/CSS are still
+   settling in on a slow connection. */
+(function hidePageLoader() {
+  const loader = document.getElementById('pageLoader');
+  if (!loader) return;
+  window.requestAnimationFrame(() => {
+    window.setTimeout(() => {
+      loader.classList.add('loader-hidden');
+      window.setTimeout(() => loader.remove(), 500);
+    }, 150);
+  });
+})();
 
 /* ── Theme toggle ── */
 const themeToggle = document.getElementById('themeToggle');

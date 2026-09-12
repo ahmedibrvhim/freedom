@@ -212,39 +212,38 @@ const CATEGORY_TREE = [
 ];
 
 /* ── Category names ──
-   ONE label per category, used as-is in every language on purpose —
-   these are short, internationally-recognizable words (like a menu
-   in any country keeps "Pizza" or "Sushi" the same everywhere), so a
-   guest browsing in any language still recognizes the section. */
+   Translated per language, so the tabs and section headers on the
+   menu page read naturally in whichever language the guest picked
+   (previously these were English-only regardless of language). */
 const CATEGORY_NAMES = {
-  food:            'Food',
-  breakfast:       'Breakfast',
-  appetizers:      'Appetizers',
-  salads:          'Salads',
-  soup:            'Soup',
-  sandwiches:      'Sandwiches',
-  main_dishes:     'Main Dishes',
-  meat:            'Meat',
-  chicken:         'Chicken',
-  fish:            'Fish',
-  pasta:           'Pasta',
-  pizza:           'Pizza',
-  desserts:        'Desserts',
-  drinks:          'Drinks',
-  hot_drinks:      'Hot Drinks',
-  soft_drinks:     'Soft Drinks',
-  iced_drinks:     'Iced Drinks',
-  milkshake:       'Milk Shake',
-  fresh_juice:     'Fresh Juice',
-  fresh_cocktails: 'Fresh Cocktails',
-  mocktails:       'Mocktails',
-  cocktails:       'Cocktails',
-  shoots:          'Shoots',
-  wine:            'Wine',
-  beer:            'Beer',
-  shisha:          'Shisha Pipes',
-  nuts_mazza:      'Nuts & Mazza',
-  billiards:       'Billiards',
+  food:            { en:'Food',            ar:'الطعام',                  fr:'Nourriture',        ru:'Еда',                     es:'Comida',             pl:'Jedzenie',        de:'Essen',              it:'Cibo' },
+  breakfast:       { en:'Breakfast',       ar:'الإفطار',                 fr:'Petit-déjeuner',    ru:'Завтрак',                 es:'Desayuno',           pl:'Śniadanie',       de:'Frühstück',          it:'Colazione' },
+  appetizers:      { en:'Appetizers',      ar:'المقبلات',                fr:'Entrées',           ru:'Закуски',                 es:'Entrantes',          pl:'Przystawki',      de:'Vorspeisen',         it:'Antipasti' },
+  salads:          { en:'Salads',          ar:'السلطات',                 fr:'Salades',           ru:'Салаты',                  es:'Ensaladas',          pl:'Sałatki',         de:'Salate',             it:'Insalate' },
+  soup:            { en:'Soup',            ar:'الشوربة',                 fr:'Soupes',            ru:'Супы',                    es:'Sopas',              pl:'Zupy',            de:'Suppen',             it:'Zuppe' },
+  sandwiches:      { en:'Sandwiches',      ar:'الساندويتشات',            fr:'Sandwiches',        ru:'Сэндвичи',                es:'Sándwiches',         pl:'Kanapki',         de:'Sandwiches',         it:'Panini' },
+  main_dishes:     { en:'Main Dishes',     ar:'الأطباق الرئيسية',        fr:'Plats principaux',  ru:'Основные блюда',          es:'Platos principales', pl:'Dania główne',    de:'Hauptgerichte',      it:'Piatti principali' },
+  meat:            { en:'Meat',            ar:'اللحوم',                  fr:'Viandes',           ru:'Мясо',                    es:'Carnes',             pl:'Mięso',           de:'Fleisch',            it:'Carne' },
+  chicken:         { en:'Chicken',         ar:'الدجاج',                  fr:'Poulet',            ru:'Курица',                  es:'Pollo',              pl:'Kurczak',         de:'Hähnchen',           it:'Pollo' },
+  fish:            { en:'Fish',            ar:'الأسماك',                 fr:'Poissons',          ru:'Рыба',                    es:'Pescado',            pl:'Ryby',            de:'Fisch',              it:'Pesce' },
+  pasta:           { en:'Pasta',           ar:'المكرونة',                fr:'Pâtes',             ru:'Паста',                   es:'Pasta',              pl:'Makaron',         de:'Pasta',              it:'Pasta' },
+  pizza:           { en:'Pizza',           ar:'البيتزا',                 fr:'Pizza',             ru:'Пицца',                   es:'Pizza',              pl:'Pizza',           de:'Pizza',              it:'Pizza' },
+  desserts:        { en:'Desserts',        ar:'الحلويات',                fr:'Desserts',          ru:'Десерты',                 es:'Postres',            pl:'Desery',          de:'Desserts',           it:'Dessert' },
+  drinks:          { en:'Drinks',          ar:'المشروبات',               fr:'Boissons',          ru:'Напитки',                 es:'Bebidas',            pl:'Napoje',          de:'Getränke',           it:'Bevande' },
+  hot_drinks:      { en:'Hot Drinks',      ar:'المشروبات الساخنة',       fr:'Boissons chaudes',  ru:'Горячие напитки',         es:'Bebidas calientes',  pl:'Gorące napoje',   de:'Heiße Getränke',     it:'Bevande calde' },
+  soft_drinks:     { en:'Soft Drinks',     ar:'المشروبات الغازية',       fr:'Boissons gazeuses', ru:'Безалкогольные напитки',  es:'Refrescos',          pl:'Napoje gazowane', de:'Softdrinks',         it:'Bibite' },
+  iced_drinks:     { en:'Iced Drinks',     ar:'المشروبات المثلجة',       fr:'Boissons glacées',  ru:'Холодные напитки',        es:'Bebidas frías',      pl:'Zimne napoje',    de:'Eisgekühlte Getränke', it:'Bevande fredde' },
+  milkshake:       { en:'Milk Shake',      ar:'ميلك شيك',                fr:'Milk-shake',        ru:'Молочный коктейль',       es:'Batido',             pl:'Koktajl mleczny', de:'Milchshake',         it:'Frappè' },
+  fresh_juice:     { en:'Fresh Juice',     ar:'العصائر الطازجة',         fr:'Jus frais',         ru:'Свежевыжатые соки',       es:'Jugos frescos',      pl:'Świeże soki',     de:'Frische Säfte',      it:'Succhi freschi' },
+  fresh_cocktails: { en:'Fresh Cocktails', ar:'الكوكتيلات الطازجة',      fr:'Cocktails frais',   ru:'Свежие коктейли',         es:'Cócteles frescos',   pl:'Świeże koktajle', de:'Frische Cocktails',  it:'Cocktail freschi' },
+  mocktails:       { en:'Mocktails',       ar:'موكتيلز (بدون كحول)',     fr:'Mocktails',         ru:'Безалкогольные коктейли', es:'Mocktails',          pl:'Mocktaile',       de:'Mocktails',          it:'Mocktail' },
+  cocktails:       { en:'Cocktails',       ar:'الكوكتيلات',              fr:'Cocktails',         ru:'Коктейли',                es:'Cócteles',           pl:'Koktajle',        de:'Cocktails',          it:'Cocktail' },
+  shoots:          { en:'Shoots',          ar:'شوتس',                    fr:'Shots',             ru:'Шоты',                    es:'Chupitos',           pl:'Shoty',           de:'Shots',              it:'Shot' },
+  wine:            { en:'Wine',            ar:'النبيذ',                  fr:'Vin',               ru:'Вино',                    es:'Vino',               pl:'Wino',            de:'Wein',               it:'Vino' },
+  beer:            { en:'Beer',            ar:'البيرة',                  fr:'Bière',             ru:'Пиво',                    es:'Cerveza',            pl:'Piwo',            de:'Bier',               it:'Birra' },
+  shisha:          { en:'Shisha Pipes',    ar:'الشيشة',                  fr:'Chichas',           ru:'Кальян',                  es:'Shisha',             pl:'Fajka wodna',     de:'Shisha',             it:'Narghilè' },
+  nuts_mazza:      { en:'Nuts & Mazza',    ar:'المكسرات والمزة',         fr:'Noix & Mezze',      ru:'Орешки и мезе',           es:'Frutos secos y mezze', pl:'Orzechy i mezze', de:'Nüsse & Mezze',    it:'Noci e mezze' },
+  billiards:       { en:'Billiards',       ar:'البلياردو',               fr:'Billard',           ru:'Бильярд',                 es:'Billar',             pl:'Bilard',          de:'Billard',            it:'Biliardo' },
 };
 
 /* ── Category hints ──
@@ -297,76 +296,76 @@ const ITEM_DATA = {
       "price": "275",
       "en": [
         "English Breakfast",
-        "Eggs, sausage, frise ,beans & toast"
+        "Eggs, sausage, fries, beans & toast"
       ],
       "ar": [
         "فطور إنجليزي",
-        "بيض، سجق ، بطاطس ،فول وتوست"
+        "بيض، سجق، بطاطس، فول وتوست"
       ],
       "fr": [
         "Petit-déjeuner anglais",
-        "Œufs, saucisse, haricots et toast"
+        "Œufs, saucisse, frites, haricots et toast"
       ],
       "ru": [
         "Английский завтрак",
-        "Яйца, колбаски, бобы и тост"
+        "Яйца, колбаски, картофель фри, бобы и тост"
       ],
       "es": [
         "Desayuno inglés",
-        "Huevos, salchicha, judías y tostada"
+        "Huevos, salchicha, papas fritas, judías y tostada"
       ],
       "pl": [
         "Śniadanie angielskie",
-        "Jajka, kiełbaski, fasolka i tost"
+        "Jajka, kiełbaski, frytki, fasolka i tost"
       ],
       "de": [
         "Englisches Frühstück",
-        "Eier, Würstchen, Bohnen & Toast"
+        "Eier, Würstchen, Pommes, Bohnen & Toast"
       ],
       "it": [
         "Colazione inglese",
-        "Uova, salsiccia, fagioli e toast"
+        "Uova, salsiccia, patatine, fagioli e toast"
       ]
     },
     {
       "price": "185",
       "en": [
         "Oriental Breakfast",
-        "Ful, eggs, frise ,cheese & fresh bread"
+        "Ful, eggs, fries, cheese & fresh bread"
       ],
       "ar": [
         "فطور شرقي",
-        "فول، بيض، جبنة، بطاطس وخبز طازج"
+        "فول، بيض، بطاطس، جبنة وخبز طازج"
       ],
       "fr": [
         "Petit-déjeuner oriental",
-        "Foul, œufs, fromage et pain frais"
+        "Ful, œufs, frites, fromage et pain frais"
       ],
       "ru": [
         "Восточный завтрак",
-        "Фуль, яйца, сыр и свежий хлеб"
+        "Фуль, яйца, картофель фри, сыр и свежий хлеб"
       ],
       "es": [
         "Desayuno oriental",
-        "Ful, huevos, queso y pan fresco"
+        "Ful, huevos, papas fritas, queso y pan fresco"
       ],
       "pl": [
         "Śniadanie orientalne",
-        "Ful, jajka, ser i świeże pieczywo"
+        "Ful, jajka, frytki, ser i świeże pieczywo"
       ],
       "de": [
         "Orientalisches Frühstück",
-        "Ful, Eier, Käse & frisches Brot"
+        "Ful, Eier, Pommes, Käse & frisches Brot"
       ],
       "it": [
         "Colazione orientale",
-        "Ful, uova, formaggio e pane fresco"
+        "Ful, uova, patatine, formaggio e pane fresco"
       ]
     },
     {
       "price": "90",
       "en": [
-        "Foul (Butter or Oil)",
+        "Ful (Butter or Oil)",
         "Slow-cooked fava beans"
       ],
       "ar": [
@@ -374,8 +373,8 @@ const ITEM_DATA = {
         "فول مدمس مطهو ببطء"
       ],
       "fr": [
-        "Foul (beurre ou huile)",
-        "Fèves mijotées"
+        "Ful (beurre ou huile)",
+        "Fèves mijotées lentement"
       ],
       "ru": [
         "Фуль (масло сливочное/растительное)",
@@ -1435,7 +1434,7 @@ const ITEM_DATA = {
       ],
       "ru": [
         "Суп с креветками",
-        "Кремовый суп-бисque с креветками"
+        "Кремовый суп-биск с креветками"
       ],
       "es": [
         "Sopa de camarones",
@@ -1704,7 +1703,7 @@ const ITEM_DATA = {
     {
       "price": "240",
       "en": [
-        "Chicken Pannni",
+        "Chicken Panini",
         "Grilled chicken, toasted panini bread"
       ],
       "ar": [
@@ -6543,7 +6542,8 @@ const ITEM_DATA = {
 /* Builds one language's category tree: { id, name, hint, children:[...] }
    for branch nodes, or { id, name, hint, items:[] } for leaf nodes. */
 function buildCategory(node, lang) {
-  const name = CATEGORY_NAMES[node.key] || node.key;
+  const names = CATEGORY_NAMES[node.key] || {};
+  const name = names[lang] || names.en || node.key;
   const hints = CATEGORY_HINTS[node.key] || {};
   const hint = hints[lang] || '';
   if (node.children) {

@@ -290,7 +290,9 @@ nav.site-nav {
 .menu-hero {
   position:relative; z-index:1;
   text-align:center; padding:64px 24px 40px;
+  transition:opacity .18s ease;
 }
+.menu-hero.is-switching { opacity:0; }
 .menu-hero-eyebrow {
   font-size:10px; letter-spacing:5px; text-transform:uppercase;
   color:var(--gold-dim); margin-bottom:14px;
@@ -309,8 +311,10 @@ nav.site-nav {
   -webkit-overflow-scrolling:touch;
   padding:0 20px 28px; max-width:920px; margin:0 auto;
   scrollbar-width:none;
+  transition:opacity .18s ease;
 }
 .cat-tabs::-webkit-scrollbar { display:none; }
+.cat-tabs.is-switching { opacity:0; }
 .cat-tab {
   flex:0 0 auto;
   background:transparent; border:1px solid var(--line-soft);
@@ -396,7 +400,9 @@ footer.site-foot {
   border-top:1px solid var(--line-soft);
   padding:40px 24px calc(32px + env(safe-area-inset-bottom));
   text-align:center;
+  transition:opacity .18s ease;
 }
+footer.site-foot.is-switching { opacity:0; }
 .foot-brand { font-family:'Fraunces', serif; font-size:20px; color:var(--gold-soft); letter-spacing:2px; margin-bottom:14px; }
 .foot-row { font-size:11.5px; color:var(--cream-dim); letter-spacing:.3px; margin-bottom:6px; }
 .foot-row .label { color:var(--gold-dim); text-transform:uppercase; font-size:9px; letter-spacing:2px; margin-inline-end:8px; }

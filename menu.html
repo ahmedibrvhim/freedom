@@ -82,6 +82,8 @@ const langSwitch      = document.getElementById('langSwitch');
 const langSwitchBtn   = document.getElementById('langSwitchBtn');
 const langSwitchLabel = document.getElementById('langSwitchLabel');
 const langSwitchMenu  = document.getElementById('langSwitchMenu');
+const menuHero        = document.querySelector('.menu-hero');
+const siteFoot        = document.querySelector('.site-foot');
 const menuHeroEyebrow = document.getElementById('menuHeroEyebrow');
 const menuHeroTitle   = document.getElementById('menuHeroTitle');
 const menuHeroSub     = document.getElementById('menuHeroSub');
@@ -185,27 +187,55 @@ function switchCategory(id) {
   }, 180);
 }
 
+/* Keeps whichever category the guest was looking at when they switch
+   language (category ids are language-independent), falling back to
+   the first category only the very first time, when nothing is
+   selected yet. Runs the whole update through the same short fade
+   used for category switching so the language change feels smooth
+   instead of an abrupt content jump. */
 function setLang(code) {
+  const isFirstLoad = activeCat === null;
+  const hadCat = activeCat;
+
   lang = code;
   CafeI18n.saveLang(lang);
   CafeI18n.applyDocumentDirection(lang);
-  activeCat = MENU_DATA[lang][0].id;
 
-  brandWord.textContent = CafeI18n.t('brand_name', lang);
-  footBrand.textContent = CafeI18n.t('brand_name', lang);
-  langSwitchLabel.textContent = LANG_LIST.find(l => l.code === lang).label;
-  menuHeroEyebrow.textContent = CafeI18n.t('nav_menu', lang);
-  menuHeroTitle.textContent = CafeI18n.t('brand_name', lang);
-  menuHeroSub.textContent = CafeI18n.t('menu_hero_sub', lang);
-  footHoursLabel.textContent = CafeI18n.t('footer_hours_label', lang);
-  footHoursValue.textContent = CafeI18n.t('footer_hours_value', lang);
-  footAddressLabel.textContent = CafeI18n.t('footer_address_label', lang);
-  footAddressValue.textContent = CafeI18n.t('footer_address_value', lang);
-  footNote.textContent = CafeI18n.t('footer_note', lang);
+  const cats = MENU_DATA[lang];
+  activeCat = (!isFirstLoad && cats.some(c => c.id === hadCat))
+    ? hadCat
+    : cats[0].id;
 
-  renderLangMenu();
-  renderTabs();
-  renderMenu();
+  function applyText() {
+    brandWord.textContent = CafeI18n.t('brand_name', lang);
+    footBrand.textContent = CafeI18n.t('brand_name', lang);
+    langSwitchLabel.textContent = LANG_LIST.find(l => l.code === lang).label;
+    menuHeroEyebrow.textContent = CafeI18n.t('nav_menu', lang);
+    menuHeroTitle.textContent = CafeI18n.t('brand_name', lang);
+    menuHeroSub.textContent = CafeI18n.t('menu_hero_sub', lang);
+    footHoursLabel.textContent = CafeI18n.t('footer_hours_label', lang);
+    footHoursValue.textContent = CafeI18n.t('footer_hours_value', lang);
+    footAddressLabel.textContent = CafeI18n.t('footer_address_label', lang);
+    footAddressValue.textContent = CafeI18n.t('footer_address_value', lang);
+    footNote.textContent = CafeI18n.t('footer_note', lang);
+
+    renderLangMenu();
+    renderTabs();
+    renderMenu();
+  }
+
+  if (isFirstLoad) {
+    // No fade needed on initial page load.
+    applyText();
+    return;
+  }
+
+  const fadeEls = [menuHero, catTabs, menuBody, siteFoot];
+  fadeEls.forEach(el => el.classList.add('is-switching'));
+  window.setTimeout(() => {
+    applyText();
+    fadeEls.forEach(el => el.classList.remove('is-switching'));
+  }, 180);
 }
 
 langSwitchBtn.addEventListener('click', () => langSwitch.classList.toggle('open'));

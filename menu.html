@@ -124,7 +124,49 @@
   <div class="foot-row"><span class="label" id="footHoursLabel">Open daily</span><span id="footHoursValue">8:00 – 22:00</span></div>
   <div class="foot-row"><span class="label" id="footAddressLabel">Find us</span><span id="footAddressValue">123 Coffee Street, Giza</span></div>
   <div class="foot-note" id="footNote">Prices include tax. Ask your server about seasonal specials.</div>
+
+  <div class="footer-review" id="footerReview">
+    <div class="footer-review-stars" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+    </div>
+    <div class="footer-review-eyebrow" id="footerReviewEyebrow">We'd love your feedback</div>
+    <div class="footer-review-title" id="footerReviewTitle">Tell us how it went</div>
+    <p class="footer-review-text" id="footerReviewText">A review takes less than a minute and genuinely helps us keep getting better.</p>
+    <a class="footer-review-cta" id="footerReviewCta" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.9-2.26 5.36-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span id="footerReviewCtaLabel">Rate us on Google</span>
+    </a>
+  </div>
 </footer>
+
+<button class="review-fab" id="reviewFab" type="button">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+  <span id="reviewFabLabel">Rate us</span>
+</button>
+
+<div class="review-toast" id="reviewToast" role="dialog" aria-live="polite">
+  <button class="review-toast-close" id="reviewToastClose" type="button" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="review-toast-head">
+    <div class="review-toast-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7-5.4-4.7 7.1-.6z"/></svg>
+    </div>
+    <div class="review-toast-title" id="reviewToastTitle">Enjoying your evening?</div>
+  </div>
+  <p class="review-toast-text" id="reviewToastText">A quick word from you on Google would mean a lot to us.</p>
+  <div class="review-toast-actions">
+    <a class="review-toast-cta" id="reviewToastCta" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.9-2.26 5.36-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span id="reviewToastCtaLabel">Leave a review</span>
+    </a>
+    <button class="review-toast-later" id="reviewToastLater" type="button">Maybe later</button>
+  </div>
+</div>
 
 <script src="i18n.js"></script>
 <script>
@@ -152,6 +194,24 @@ const footHoursValue  = document.getElementById('footHoursValue');
 const footAddressLabel= document.getElementById('footAddressLabel');
 const footAddressValue= document.getElementById('footAddressValue');
 const footNote        = document.getElementById('footNote');
+
+const footerReviewEyebrow = document.getElementById('footerReviewEyebrow');
+const footerReviewTitle   = document.getElementById('footerReviewTitle');
+const footerReviewText    = document.getElementById('footerReviewText');
+const footerReviewCta     = document.getElementById('footerReviewCta');
+const footerReviewCtaLabel= document.getElementById('footerReviewCtaLabel');
+const reviewFab        = document.getElementById('reviewFab');
+const reviewFabLabel    = document.getElementById('reviewFabLabel');
+const reviewToast       = document.getElementById('reviewToast');
+const reviewToastTitle   = document.getElementById('reviewToastTitle');
+const reviewToastText    = document.getElementById('reviewToastText');
+const reviewToastCta     = document.getElementById('reviewToastCta');
+const reviewToastCtaLabel= document.getElementById('reviewToastCtaLabel');
+const reviewToastLater   = document.getElementById('reviewToastLater');
+const reviewToastClose   = document.getElementById('reviewToastClose');
+
+footerReviewCta.href = CafeI18n.GOOGLE_REVIEW_URL;
+reviewToastCta.href  = CafeI18n.GOOGLE_REVIEW_URL;
 
 let activeCat = null;
 
@@ -292,6 +352,17 @@ function setLang(code) {
     footAddressValue.textContent = CafeI18n.t('footer_address_value', lang);
     footNote.textContent = CafeI18n.t('footer_note', lang);
 
+    footerReviewEyebrow.textContent = CafeI18n.t('footer_review_eyebrow', lang);
+    footerReviewTitle.textContent = CafeI18n.t('footer_review_title', lang);
+    footerReviewText.textContent = CafeI18n.t('footer_review_text', lang);
+    footerReviewCtaLabel.textContent = CafeI18n.t('footer_review_cta', lang);
+    reviewFabLabel.textContent = CafeI18n.t('review_fab_label', lang);
+    reviewToastTitle.textContent = CafeI18n.t('review_toast_title', lang);
+    reviewToastText.textContent = CafeI18n.t('review_toast_text', lang);
+    reviewToastCtaLabel.textContent = CafeI18n.t('review_cta', lang);
+    reviewToastLater.textContent = CafeI18n.t('review_later', lang);
+    reviewToastClose.setAttribute('aria-label', CafeI18n.t('review_close', lang));
+
     renderLangMenu();
     renderTabs();
     renderMenu();
@@ -350,6 +421,38 @@ themeToggle.addEventListener('click', () => {
   CafeI18n.saveTheme(next);
   CafeI18n.applyTheme(next);
   reflectThemeColor(next);
+});
+
+/* ── Google review: floating button + one-time toast ──
+   The FAB and footer card are always available. The toast is a
+   single, unobtrusive nudge: it only appears once a guest has
+   actually spent a bit of time browsing (not on arrival), and only
+   ever once per device — clicking through, dismissing, or just
+   letting it time out all mark it "seen" so it never nags on a
+   repeat visit. */
+function openReviewToast() {
+  if (localStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) return;
+  reviewToast.classList.add('is-visible');
+  reviewFab.classList.add('is-hidden');
+}
+function closeReviewToast() {
+  reviewToast.classList.remove('is-visible');
+  reviewFab.classList.remove('is-hidden');
+  localStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
+}
+
+if (!localStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) {
+  window.setTimeout(openReviewToast, 18000);
+}
+
+reviewToastClose.addEventListener('click', closeReviewToast);
+reviewToastLater.addEventListener('click', closeReviewToast);
+reviewToastCta.addEventListener('click', () => {
+  localStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
+  reviewToast.classList.remove('is-visible');
+});
+reviewFab.addEventListener('click', () => {
+  window.open(CafeI18n.GOOGLE_REVIEW_URL, '_blank', 'noopener');
 });
 
 /* Same bfcache issue as index.html: coming back here via the browser's

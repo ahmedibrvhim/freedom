@@ -45,7 +45,12 @@
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
-html, body { overflow-x:hidden; width:100%; }
+/* overflow-x:clip (not hidden) — hidden would force overflow-y to
+   compute as auto too, turning html/body into their own scroll
+   containers instead of the plain viewport. That's what was breaking
+   position:sticky on the nav and category tabs. clip blocks the same
+   horizontal overflow without that side effect. */
+html, body { overflow-x:clip; width:100%; }
 
 body {
   background: var(--bg);
@@ -304,12 +309,21 @@ nav.site-nav {
 }
 .menu-hero-sub { font-size:13px; color:var(--gold-dim); letter-spacing:1px; }
 
-/* Category tabs */
+/* Category tabs
+   Sticks right under the nav bar (which is itself sticky) so both the
+   language switcher and the category tabs stay reachable no matter how
+   far down the item list the guest has scrolled — no scrolling back up
+   just to change language or jump category. Needs its own background
+   (matching the page background) since content now scrolls underneath
+   it, and a z-index below the nav's 100 but above the menu content. */
 .cat-tabs {
-  position:relative; z-index:1;
+  position:sticky;
+  top:calc(var(--nav-h) + env(safe-area-inset-top));
+  z-index:90;
+  background:var(--bg);
   display:flex; gap:8px; overflow-x:auto;
   -webkit-overflow-scrolling:touch;
-  padding:0 20px 28px; max-width:920px; margin:0 auto;
+  padding:14px 20px 20px; max-width:920px; margin:0 auto;
   scrollbar-width:none;
   transition:opacity .18s ease;
 }
@@ -414,7 +428,7 @@ footer.site-foot.is-switching { opacity:0; }
   .brand-word { font-size:18px; }
   .menu-item-name { font-size:15.5px; }
   .menu-hero { padding:44px 20px 32px; }
-  .cat-tabs { padding:0 14px 24px; }
+  .cat-tabs { padding:12px 14px 18px; }
   .menu-body { padding:0 14px 60px; }
 }
 @media (max-width:380px) {

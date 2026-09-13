@@ -229,6 +229,18 @@ function renderMenu() {
   menuBody.innerHTML = renderCategory(active, 1, currency);
 }
 
+/* Tells the browser how much space the sticky nav + tab bar actually
+   take up right now (tab-bar height isn't fixed — longer translated
+   labels can wrap to two lines) so that scrolling "to the top" of the
+   menu body lands just below the sticky header instead of underneath
+   it. Recalculated on every switch since it can change per language. */
+function updateStickyOffset() {
+  const nav = document.querySelector('nav.site-nav');
+  const navH = nav ? nav.getBoundingClientRect().height : 0;
+  const tabsH = catTabs.getBoundingClientRect().height;
+  menuBody.style.scrollMarginTop = (navH + tabsH + 8) + 'px';
+}
+
 /* Swaps the visible category with a short fade instead of an instant
    cut, then scrolls the panel into view (useful once a category's
    content is taller/shorter than the previous one). */
@@ -240,9 +252,13 @@ function switchCategory(id) {
   window.setTimeout(() => {
     renderMenu();
     menuBody.classList.remove('is-switching');
+    updateStickyOffset();
     menuBody.scrollIntoView({ behavior:'smooth', block:'start' });
   }, 180);
 }
+
+window.addEventListener('resize', updateStickyOffset);
+
 
 /* Keeps whichever category the guest was looking at when they switch
    language (category ids are language-independent), falling back to
@@ -292,6 +308,7 @@ function setLang(code) {
   window.setTimeout(() => {
     applyText();
     fadeEls.forEach(el => el.classList.remove('is-switching'));
+    updateStickyOffset();
   }, 180);
 }
 
@@ -301,6 +318,7 @@ document.addEventListener('click', (e) => {
 });
 
 setLang(lang);
+updateStickyOffset();
 
 /* Content is rendered synchronously above, so the loader can come down
    now — a tiny extra delay + fade keeps the swap feeling smooth rather

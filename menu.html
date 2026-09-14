@@ -423,32 +423,35 @@ themeToggle.addEventListener('click', () => {
   reflectThemeColor(next);
 });
 
-/* ── Google review: floating button + one-time toast ──
+/* ── Google review: floating button + one-time-per-visit toast ──
    The FAB and footer card are always available. The toast is a
    single, unobtrusive nudge: it only appears once a guest has
    actually spent a bit of time browsing (not on arrival), and only
-   ever once per device — clicking through, dismissing, or just
-   letting it time out all mark it "seen" so it never nags on a
-   repeat visit. */
+   once per browser session — dismissing it, clicking through, or
+   letting it time out all mark it "seen" so it won't nag again while
+   they keep browsing this visit. sessionStorage (not localStorage) is
+   used on purpose: a fresh tab — e.g. scanning the table QR code
+   again next time — starts a new session, so the prompt is free to
+   show again on that next visit instead of being silenced forever. */
 function openReviewToast() {
-  if (localStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) return;
+  if (sessionStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) return;
   reviewToast.classList.add('is-visible');
   reviewFab.classList.add('is-hidden');
 }
 function closeReviewToast() {
   reviewToast.classList.remove('is-visible');
   reviewFab.classList.remove('is-hidden');
-  localStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
+  sessionStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
 }
 
-if (!localStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) {
+if (!sessionStorage.getItem(CafeI18n.REVIEW_SEEN_KEY)) {
   window.setTimeout(openReviewToast, 18000);
 }
 
 reviewToastClose.addEventListener('click', closeReviewToast);
 reviewToastLater.addEventListener('click', closeReviewToast);
 reviewToastCta.addEventListener('click', () => {
-  localStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
+  sessionStorage.setItem(CafeI18n.REVIEW_SEEN_KEY, '1');
   reviewToast.classList.remove('is-visible');
 });
 reviewFab.addEventListener('click', () => {
